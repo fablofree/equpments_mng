@@ -81,10 +81,10 @@ api/
 
 ### 1. Copier le projet
 
-Copier le dossier `api/` dans le répertoire WampServer :
+Copier le dossier `backend` dans le répertoire WampServer :
 
 ```
-C:\wamp64\www\equipments_mng\
+C:\wamp64\www\
 ```
 
 ### 2. Configurer l'environnement
@@ -106,7 +106,7 @@ DB_DATABASE=equipments_mng
 DB_USERNAME=root
 DB_PASSWORD=
 
-JWT_SECRET=remplacez_par_une_cle_aleatoire_de_minimum_32_caracteres
+JWT_SECRET=0675fc155fa2b6bdefced153c6d05682fbc2e00158774ca75fe7de0c5b35c3be
 JWT_EXPIRATION=86400
 ```
 
@@ -144,7 +144,7 @@ mysql -u root -p equipments_mng < database/seeds/001_seed_admin_user.sql
 mysql -u root -p equipments_mng < database/seeds/002_seed_sample_data.sql
 ```
 
-> Compte admin créé : `admin@esn.com` / `Admin@1234`
+> Compte admin créé : `admin@gmail.com` / `admin@123`
 > **Changer le mot de passe immédiatement après le premier login.**
 
 ---
@@ -157,31 +157,31 @@ Ajouter dans `C:\wamp64\bin\apache\apache2.x.x\conf\extra\httpd-vhosts.conf` :
 
 ```apache
 <VirtualHost *:80>
-    ServerName api.equipments.local
-    DocumentRoot "C:/wamp64/www/equipments_mng/api"
+    ServerName equipments.backend
+    DocumentRoot "${INSTALL_DIR}/www/backend"
 
-    <Directory "C:/wamp64/www/equipments_mng/api">
-        Options -Indexes +FollowSymLinks
+    <Directory "${INSTALL_DIR}/www/backend">
+        Options +Indexes +FollowSymLinks
         AllowOverride All
         Require all granted
     </Directory>
 
-    ErrorLog  "C:/wamp64/logs/equipments_api_error.log"
-    CustomLog "C:/wamp64/logs/equipments_api_access.log" combined
+    ErrorLog  "${INSTALL_DIR}/logs/equipments_api_error.log"
+    CustomLog "${INSTALL_DIR}/logs/equipments_api_access.log" combined
 </VirtualHost>
 ```
 
 Ajouter dans `C:\Windows\System32\drivers\etc\hosts` :
 
 ```
-127.0.0.1   api.equipments.local
+127.0.0.1 equipments.backend
 ```
 
-Redémarrer WampServer. L'API sera disponible sur `http://api.equipments.local/api/`.
+Redémarrer WampServer. L'API sera disponible sur `http://equipments.backend/api/`.
 
 ### Option B — Sous-dossier (développement rapide)
 
-Accès direct via : `http://localhost/equipments_mng/api/public/api/`
+Accès direct via : `http://localhost/backend/api/public/api/`
 
 Aucune configuration supplémentaire n'est requise si `mod_rewrite` est activé.
 
@@ -203,12 +203,12 @@ Authorization: Bearer <votre_token>
 **Obtenir un token :**
 
 ```http
-POST /api/login
+POST http://equipments.backend:api/login
 Content-Type: application/json
 
 {
-  "email": "admin@esn.com",
-  "password": "Admin@1234"
+  "email": "admin@gmail.com",
+  "password": "admin@123"
 }
 ```
 
