@@ -120,7 +120,7 @@ class Request
 
     public function getAuthorizationToken(): ?string
     {
-        $header = $this->header('authorization');
+        $header = getallheaders()['authorization'] ?? getallheaders()['Authorization'] ?? null;
         if ($header && preg_match('/^Bearer\s+(.+)$/i', $header, $matches)) {
             return $matches[1];
         }
