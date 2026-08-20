@@ -1,0 +1,66 @@
+<div class="d-flex align-items-center gap-3 mb-4">
+  <a routerLink="/assignments" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i></a>
+  <div>
+    <h2 class="h4 fw-bold mb-0">Nouvelle affectation</h2>
+    <p class="text-muted small mb-0">Attribuer un équipement disponible à un employé</p>
+  </div>
+</div>
+
+<div *ngIf="loading" class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+
+<div class="form-card" *ngIf="!loading">
+  <div class="card">
+    <div class="card-body p-4">
+      <div *ngIf="error" class="alert alert-danger py-2">{{ error }}</div>
+
+      <div *ngIf="availableEquipments.length === 0" class="alert alert-warning d-flex align-items-center gap-2">
+        <i class="bi bi-exclamation-triangle"></i>
+        Aucun équipement disponible. Veuillez d'abord ajouter des équipements avec le statut "Disponible".
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="form-label fw-semibold">Employé <span class="text-danger">*</span></label>
+            <select class="form-select" formControlName="employe_id"
+                    [class.is-invalid]="form.get('employe_id')?.invalid && form.get('employe_id')?.touched">
+              <option [value]="null">-- Sélectionner un employé --</option>
+              <option *ngFor="let emp of employees" [value]="emp.id">
+                {{ emp.prenom }} {{ emp.nom }} — {{ emp.service }}
+              </option>
+            </select>
+            <div class="invalid-feedback">Requis.</div>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label fw-semibold">Équipement (disponibles uniquement) <span class="text-danger">*</span></label>
+            <select class="form-select" formControlName="equipement_id"
+                    [class.is-invalid]="form.get('equipement_id')?.invalid && form.get('equipement_id')?.touched"
+                    [disabled]="availableEquipments.length === 0">
+              <option [value]="null">-- Sélectionner un équipement --</option>
+              <option *ngFor="let eq of availableEquipments" [value]="eq.id">
+                [{{ eq.reference }}] {{ eq.nom }} — {{ eq.marque }}
+              </option>
+            </select>
+            <div class="invalid-feedback">Requis.</div>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Date d'affectation <span class="text-danger">*</span></label>
+            <input type="date" class="form-control" formControlName="date_affectation"
+                   [class.is-invalid]="form.get('date_affectation')?.invalid && form.get('date_affectation')?.touched" />
+            <div class="invalid-feedback">Requis.</div>
+          </div>
+        </div>
+
+        <div class="d-flex gap-2 mt-4">
+          <button type="submit" class="btn btn-primary" [disabled]="saving || availableEquipments.length === 0">
+            <span *ngIf="saving" class="spinner-border spinner-border-sm me-1"></span>
+            Créer l'affectation
+          </button>
+          <a routerLink="/assignments" class="btn btn-light">Annuler</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

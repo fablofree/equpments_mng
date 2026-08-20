@@ -1,0 +1,23 @@
+<nav class="sidebar">
+  <a class="sidebar-brand" routerLink="/dashboard">
+    <i class="bi bi-box-seam"></i>
+    EquipManager
+  </a>
+
+  <div class="sidebar-nav">
+    @for (section of sections; track section) {
+      <div class="nav-section-title">{{ section }}</div>
+      @for (item of itemsFor(section); track item.route) {
+        <a
+          class="sidebar-link"
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }"
+        >
+          <i class="bi {{ item.icon }}"></i>
+          {{ item.label }}
+        </a>
+      }
+    }
+  </div>
+</nav>

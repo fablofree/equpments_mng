@@ -1,0 +1,102 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h2 class="h4 fw-bold mb-0">Affectations</h2>
+    <p class="text-muted small mb-0">Équipements attribués aux employés</p>
+  </div>
+  <a routerLink="/assignments/new" class="btn btn-primary d-flex align-items-center gap-2">
+    <i class="bi bi-plus-circle"></i>Nouvelle affectation
+  </a>
+</div>
+
+<div *ngIf="successMessage" class="alert alert-success py-2">
+  <i class="bi bi-check-circle me-2"></i>{{ successMessage }}
+</div>
+<div *ngIf="error" class="alert alert-danger py-2">{{ error }}</div>
+
+<div class="card">
+  <div class="card-header bg-transparent d-flex align-items-center gap-3 flex-wrap py-3">
+    <select class="form-select" style="max-width:200px;"
+            [(ngModel)]="filterActive" (change)="load(1)">
+      <option value="">Toutes les affectations</option>
+      <option value="true">Actives seulement</option>
+      <option value="false">Retournées seulement</option>
+    </select>
+    <span class="text-muted small ms-auto" *ngIf="pagination">{{ pagination.total }} affectation(s)</span>
+  </div>
+
+  <div class="card-body p-0">
+    <div *ngIf="loading" class="text-center py-4">
+      <div class="spinner-border spinner-border-sm text-primary"></div>
+    </div>
+    <div class="table-responsive" *ngIf="!loading">
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Employé</th>
+            <th>Équipement</th>
+            <th>Référence</th>
+            <th>Date affectation</th>
+            <th>Date retour</th>
+            <th>Statut</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let a of assignments">
+            <td>{{ a.employe?.prenom }} {{ a.employe?.nom }}</td>
+            <td>{{ a.equipement?.nom }}</td>
+            <td><code>{{ a.equipement?.reference }}</code></td>
+            <td class="text-muted">{{ a.date_affectation | date:'dd/MM/yyyy' }}</td>
+            <td class="text-muted">{{ a.date_retour ? (a.date_retour | date:'dd/MM/yyyy') : '—' }}</td>
+            <td>
+              <span class="badge rounded-pill"
+                    [class.bg-success]="a.active"
+                    [class.bg-secondary]="!a.active">
+                {{ a.active ? 'Active' : 'Retournée' }}
+              </span>
+            </td>
+            <td class="text-end">
+              <button
+                *ngIf="a.active"
+                class="btn btn-sm btn-outline-warning btn-action"
+                title="Enregistrer le retour"
+                (click)="confirmReturn(a.id)">
+                <i class="bi bi-arrow-return-left"></i>
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="assignments.length === 0">
+            <td colspan="7" class="text-center text-muted py-4">Aucune affectation trouvée.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card-footer bg-transparent d-flex justify-content-end" *ngIf="pagination">
+    <app-pagination [pagination]="pagination" (pageChange)="load($event)" />
+  </div>
+</div>
+
+<!-- Return Confirmation Modal -->
+<div class="modal fade" [class.show]="returnId !== null" [style.display]="returnId !== null ? 'block' : 'none'"
+     tabindex="-1" *ngIf="returnId !== null">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <h5 class="modal-title fw-semibold">Confirmer le retour</h5>
+      </div>
+      <div class="modal-body">
+        <p class="mb-0">Enregistrer le retour de cet équipement à la date d'aujourd'hui ?</p>
+      </div>
+      <div class="modal-footer border-0">
+        <button class="btn btn-light" (click)="cancelReturn()" [disabled]="returnLoading">Annuler</button>
+        <button class="btn btn-warning" (click)="doReturn()" [disabled]="returnLoading">
+          <span *ngIf="returnLoading" class="spinner-border spinner-border-sm me-1"></span>
+          Confirmer le retour
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" *ngIf="returnId !== null"></div>

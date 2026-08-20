@@ -1,0 +1,54 @@
+<div class="mb-4">
+  <h2 class="h4 fw-bold mb-0">Mon profil</h2>
+  <p class="text-muted small mb-0">Modifier vos informations personnelles</p>
+</div>
+
+<div class="form-card">
+  <div class="card">
+    <div class="card-body p-4">
+      <div class="avatar-circle mb-4">{{ initials }}</div>
+
+      <div *ngIf="success" class="alert alert-success py-2">
+        <i class="bi bi-check-circle me-2"></i>{{ success }}
+      </div>
+      <div *ngIf="error" class="alert alert-danger py-2">{{ error }}</div>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Prénom <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" formControlName="prenom"
+                   [class.is-invalid]="form.get('prenom')?.invalid && form.get('prenom')?.touched" />
+            <div class="invalid-feedback">Prénom requis.</div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Nom <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" formControlName="nom"
+                   [class.is-invalid]="form.get('nom')?.invalid && form.get('nom')?.touched" />
+            <div class="invalid-feedback">Nom requis.</div>
+          </div>
+          <div class="col-12">
+            <label class="form-label fw-semibold">Adresse e-mail <span class="text-danger">*</span></label>
+            <input type="email" class="form-control" formControlName="email"
+                   [class.is-invalid]="form.get('email')?.invalid && form.get('email')?.touched" />
+            <div class="invalid-feedback">Adresse e-mail invalide.</div>
+          </div>
+          <div class="col-12">
+            <label class="form-label fw-semibold">Nouveau mot de passe <span class="text-muted small">(optionnel)</span></label>
+            <input type="password" class="form-control" formControlName="password"
+                   placeholder="Laisser vide pour ne pas changer"
+                   [class.is-invalid]="form.get('password')?.invalid && form.get('password')?.touched" />
+            <div class="invalid-feedback">Min. 6 caractères.</div>
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <button type="submit" class="btn btn-primary" [disabled]="saving">
+            <span *ngIf="saving" class="spinner-border spinner-border-sm me-1"></span>
+            Enregistrer les modifications
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

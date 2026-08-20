@@ -1,0 +1,4 @@
+/* Dashboard-specific overrides */
+.progress {
+  border-radius: 4px;
+}

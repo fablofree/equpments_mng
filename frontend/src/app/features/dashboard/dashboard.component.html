@@ -1,0 +1,151 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h2 class="h4 fw-bold mb-0">Tableau de bord</h2>
+    <p class="text-muted small mb-0">Vue d'ensemble du parc informatique</p>
+  </div>
+</div>
+
+<div *ngIf="loading" class="text-center py-5">
+  <div class="spinner-border text-primary"></div>
+</div>
+
+<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+<ng-container *ngIf="stats && !loading">
+
+  <!-- KPI Row -->
+  <div class="row g-3 mb-4">
+    <div class="col-sm-6 col-xl-3">
+      <div class="card stat-card h-100">
+        <div class="card-body d-flex align-items-center gap-3">
+          <div class="stat-icon bg-primary bg-opacity-10">
+            <i class="bi bi-laptop text-primary"></i>
+          </div>
+          <div>
+            <div class="h3 fw-bold mb-0">{{ stats.equipements.total }}</div>
+            <div class="text-muted small">Équipements</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+      <div class="card stat-card h-100">
+        <div class="card-body d-flex align-items-center gap-3">
+          <div class="stat-icon bg-success bg-opacity-10">
+            <i class="bi bi-people text-success"></i>
+          </div>
+          <div>
+            <div class="h3 fw-bold mb-0">{{ stats.employes.total }}</div>
+            <div class="text-muted small">Employés</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+      <div class="card stat-card h-100">
+        <div class="card-body d-flex align-items-center gap-3">
+          <div class="stat-icon bg-info bg-opacity-10">
+            <i class="bi bi-link-45deg text-info"></i>
+          </div>
+          <div>
+            <div class="h3 fw-bold mb-0">{{ stats.affectations.actives }}</div>
+            <div class="text-muted small">Affectations actives</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+      <div class="card stat-card h-100">
+        <div class="card-body d-flex align-items-center gap-3">
+          <div class="stat-icon bg-warning bg-opacity-10">
+            <i class="bi bi-tools text-warning"></i>
+          </div>
+          <div>
+            <div class="h3 fw-bold mb-0">{{ stats.equipements.maintenance }}</div>
+            <div class="text-muted small">En maintenance</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Equipment Status Breakdown -->
+  <div class="row g-3 mb-4">
+    <div class="col-lg-6">
+      <div class="card h-100">
+        <div class="card-header bg-transparent fw-semibold">
+          <i class="bi bi-bar-chart me-2 text-primary"></i>État des équipements
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <div class="d-flex justify-content-between small mb-1">
+              <span>Disponibles</span>
+              <span class="fw-semibold text-success">{{ stats.equipements.disponibles }}</span>
+            </div>
+            <div class="progress" style="height:8px;">
+              <div class="progress-bar bg-success"
+                   [style.width.%]="stats.equipements.total ? (stats.equipements.disponibles / stats.equipements.total) * 100 : 0">
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <div class="d-flex justify-content-between small mb-1">
+              <span>Affectés</span>
+              <span class="fw-semibold text-primary">{{ stats.equipements.affectes }}</span>
+            </div>
+            <div class="progress" style="height:8px;">
+              <div class="progress-bar bg-primary"
+                   [style.width.%]="stats.equipements.total ? (stats.equipements.affectes / stats.equipements.total) * 100 : 0">
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <div class="d-flex justify-content-between small mb-1">
+              <span>Maintenance</span>
+              <span class="fw-semibold text-warning">{{ stats.equipements.maintenance }}</span>
+            </div>
+            <div class="progress" style="height:8px;">
+              <div class="progress-bar bg-warning"
+                   [style.width.%]="stats.equipements.total ? (stats.equipements.maintenance / stats.equipements.total) * 100 : 0">
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="d-flex justify-content-between small mb-1">
+              <span>Hors service</span>
+              <span class="fw-semibold text-danger">{{ stats.equipements.hors_service }}</span>
+            </div>
+            <div class="progress" style="height:8px;">
+              <div class="progress-bar bg-danger"
+                   [style.width.%]="stats.equipements.total ? (stats.equipements.hors_service / stats.equipements.total) * 100 : 0">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card h-100">
+        <div class="card-header bg-transparent fw-semibold">
+          <i class="bi bi-lightning me-2 text-primary"></i>Accès rapide
+        </div>
+        <div class="card-body d-flex flex-column gap-2">
+          <a routerLink="/assignments/new" class="btn btn-outline-primary d-flex align-items-center gap-2">
+            <i class="bi bi-plus-circle"></i>Nouvelle affectation
+          </a>
+          <a routerLink="/equipments/new" class="btn btn-outline-secondary d-flex align-items-center gap-2">
+            <i class="bi bi-plus-circle"></i>Ajouter un équipement
+          </a>
+          <a routerLink="/employees/new" class="btn btn-outline-secondary d-flex align-items-center gap-2">
+            <i class="bi bi-person-plus"></i>Ajouter un employé
+          </a>
+          <a routerLink="/users/new" class="btn btn-outline-secondary d-flex align-items-center gap-2">
+            <i class="bi bi-person-gear"></i>Créer un utilisateur
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</ng-container>
