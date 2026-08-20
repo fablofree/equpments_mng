@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost/equpments_mng/api/public/api'
+  apiUrl: 'http://equipments.backend:82/api'
 };
