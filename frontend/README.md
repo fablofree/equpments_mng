@@ -287,3 +287,11 @@ ng generate interceptor core/interceptors/my-interceptor --functional
 # Check for outdated packages
 ng update
 ```
+When I affect an equipment to an employee, in the affection list only the Date Affectation displays, other fields aren't displayed (No value is visible)
+When I create an Affectation allow the user to select the return date (not mandatory)
+Allow the user to see an affectation, in the list the user can click in emplyee or equipement this redirect to that particular element
+
+For each employee display his historic affectations, same for equipment
+Allow the admin to Manage employee service and use it as a dropdown menu when creating or updating an employee
+Also manage the Equipment Category in Equipment and display the dropdown when create or update an equipment
+If the Equipement is already affected don't allow the user to change his status
