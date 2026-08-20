@@ -1,67 +1,62 @@
 <div class="d-flex align-items-center gap-3 mb-4">
-  <a routerLink="/users" class="btn btn-sm btn-outline-secondary">
-    <i class="bi bi-arrow-left"></i>
-  </a>
+  <a routerLink="/users" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i></a>
   <div>
     <h2 class="h4 fw-bold mb-0">{{ isEdit ? 'Modifier l\'utilisateur' : 'Nouvel utilisateur' }}</h2>
     <p class="text-muted small mb-0">{{ isEdit ? 'Mettre à jour les informations' : 'Créer un compte d\'accès' }}</p>
   </div>
 </div>
 
-<div *ngIf="loading" class="text-center py-5">
-  <div class="spinner-border text-primary"></div>
-</div>
+@if (loading()) {
+  <div class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+} @else {
+  <div class="form-card">
+    <div class="card">
+      <div class="card-body p-4">
+        @if (error()) {
+          <div class="alert alert-danger py-2">{{ error() }}</div>
+        }
 
-<div class="form-card" *ngIf="!loading">
-  <div class="card">
-    <div class="card-body p-4">
-      <div *ngIf="error" class="alert alert-danger py-2">{{ error }}</div>
-
-      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
-        <div class="row g-3">
-          <div class="col-md-6">
-            <label class="form-label fw-semibold">Prénom <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" formControlName="prenom"
-                   [class.is-invalid]="form.get('prenom')?.invalid && form.get('prenom')?.touched"
-                   placeholder="Jean" />
-            <div class="invalid-feedback">Prénom requis.</div>
-          </div>
-          <div class="col-md-6">
-            <label class="form-label fw-semibold">Nom <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" formControlName="nom"
-                   [class.is-invalid]="form.get('nom')?.invalid && form.get('nom')?.touched"
-                   placeholder="Dupont" />
-            <div class="invalid-feedback">Nom requis.</div>
-          </div>
-          <div class="col-12">
-            <label class="form-label fw-semibold">Adresse e-mail <span class="text-danger">*</span></label>
-            <input type="email" class="form-control" formControlName="email"
-                   [class.is-invalid]="form.get('email')?.invalid && form.get('email')?.touched"
-                   placeholder="jean.dupont@esn.com" />
-            <div class="invalid-feedback">Adresse e-mail invalide.</div>
-          </div>
-          <div class="col-12">
-            <label class="form-label fw-semibold">
-              Mot de passe {{ isEdit ? '(laisser vide pour ne pas changer)' : '' }}
-              <span class="text-danger" *ngIf="!isEdit">*</span>
-            </label>
-            <input type="password" class="form-control" formControlName="password"
-                   [class.is-invalid]="form.get('password')?.invalid && form.get('password')?.touched"
-                   [placeholder]="isEdit ? '••••••••' : 'Min. 6 caractères'" />
-            <div class="invalid-feedback">
-              {{ !isEdit ? 'Mot de passe requis (min. 6 caractères).' : 'Min. 6 caractères.' }}
+        <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Prénom <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" formControlName="prenom" placeholder="Jean"
+                     [class.is-invalid]="form.get('prenom')?.invalid && form.get('prenom')?.touched" />
+              <div class="invalid-feedback">Prénom requis.</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Nom <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" formControlName="nom" placeholder="Dupont"
+                     [class.is-invalid]="form.get('nom')?.invalid && form.get('nom')?.touched" />
+              <div class="invalid-feedback">Nom requis.</div>
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold">Adresse e-mail <span class="text-danger">*</span></label>
+              <input type="email" class="form-control" formControlName="email"
+                     [class.is-invalid]="form.get('email')?.invalid && form.get('email')?.touched" />
+              <div class="invalid-feedback">Adresse e-mail invalide.</div>
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold">
+                Mot de passe
+                @if (!isEdit) { <span class="text-danger">*</span> }
+                @else { <span class="text-muted small">(laisser vide pour ne pas changer)</span> }
+              </label>
+              <input type="password" class="form-control" formControlName="password"
+                     [placeholder]="isEdit ? '••••••••' : 'Min. 6 caractères'"
+                     [class.is-invalid]="form.get('password')?.invalid && form.get('password')?.touched" />
+              <div class="invalid-feedback">Min. 6 caractères requis.</div>
             </div>
           </div>
-        </div>
-
-        <div class="d-flex gap-2 mt-4">
-          <button type="submit" class="btn btn-primary" [disabled]="saving">
-            <span *ngIf="saving" class="spinner-border spinner-border-sm me-1"></span>
-            {{ isEdit ? 'Enregistrer' : 'Créer l\'utilisateur' }}
-          </button>
-          <a routerLink="/users" class="btn btn-light">Annuler</a>
-        </div>
-      </form>
+          <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn btn-primary" [disabled]="saving()">
+              @if (saving()) { <span class="spinner-border spinner-border-sm me-1"></span> }
+              {{ isEdit ? 'Enregistrer' : 'Créer l\'utilisateur' }}
+            </button>
+            <a routerLink="/users" class="btn btn-light">Annuler</a>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>
+}

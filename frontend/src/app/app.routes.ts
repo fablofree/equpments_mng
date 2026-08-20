@@ -63,6 +63,10 @@ export const routes: Routes = [
       {
         path: 'assignments/new',
         loadComponent: () => import('./features/assignments/assignment-form/assignment-form.component').then(m => m.AssignmentFormComponent)
+      },
+      {
+        path: 'settings',
+        loadComponent: () => import('./features/settings/settings.component').then(m => m.SettingsComponent)
       }
     ]
   },

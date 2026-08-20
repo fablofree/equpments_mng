@@ -6,65 +6,64 @@
   </div>
 </div>
 
-<div *ngIf="loading" class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+@if (loading()) {
+  <div class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+} @else {
+  <div class="form-card">
+    <div class="card">
+      <div class="card-body p-4">
+        @if (error()) { <div class="alert alert-danger py-2">{{ error() }}</div> }
 
-<div class="form-card" *ngIf="!loading">
-  <div class="card">
-    <div class="card-body p-4">
-      <div *ngIf="error" class="alert alert-danger py-2">{{ error }}</div>
-
-      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
-        <div class="row g-3">
-          <div class="col-md-6">
-            <label class="form-label fw-semibold">Référence <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" formControlName="reference"
-                   placeholder="PC-001"
-                   [class.is-invalid]="form.get('reference')?.invalid && form.get('reference')?.touched" />
-            <div class="invalid-feedback">Requis.</div>
+        <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Référence <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" formControlName="reference" placeholder="PC-001"
+                     [class.is-invalid]="form.get('reference')?.invalid && form.get('reference')?.touched" />
+              <div class="invalid-feedback">Requis.</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Nom <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" formControlName="nom" placeholder="Laptop Dell XPS 15"
+                     [class.is-invalid]="form.get('nom')?.invalid && form.get('nom')?.touched" />
+              <div class="invalid-feedback">Requis.</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Catégorie <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" formControlName="categorie" placeholder="Ordinateur portable"
+                     [class.is-invalid]="form.get('categorie')?.invalid && form.get('categorie')?.touched" />
+              <div class="invalid-feedback">Requis.</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Marque <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" formControlName="marque" placeholder="Dell"
+                     [class.is-invalid]="form.get('marque')?.invalid && form.get('marque')?.touched" />
+              <div class="invalid-feedback">Requis.</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Date d'achat <span class="text-danger">*</span></label>
+              <input type="date" class="form-control" formControlName="date_achat"
+                     [class.is-invalid]="form.get('date_achat')?.invalid && form.get('date_achat')?.touched" />
+              <div class="invalid-feedback">Requis.</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">État <span class="text-danger">*</span></label>
+              <select class="form-select" formControlName="etat">
+                @for (s of statusOptions; track s.value) {
+                  <option [value]="s.value">{{ s.label }}</option>
+                }
+              </select>
+            </div>
           </div>
-          <div class="col-md-6">
-            <label class="form-label fw-semibold">Nom <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" formControlName="nom"
-                   placeholder="Laptop Dell XPS 15"
-                   [class.is-invalid]="form.get('nom')?.invalid && form.get('nom')?.touched" />
-            <div class="invalid-feedback">Requis.</div>
+          <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn btn-primary" [disabled]="saving()">
+              @if (saving()) { <span class="spinner-border spinner-border-sm me-1"></span> }
+              {{ isEdit ? 'Enregistrer' : 'Créer' }}
+            </button>
+            <a routerLink="/equipments" class="btn btn-light">Annuler</a>
           </div>
-          <div class="col-md-6">
-            <label class="form-label fw-semibold">Catégorie <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" formControlName="categorie"
-                   placeholder="Ordinateur portable"
-                   [class.is-invalid]="form.get('categorie')?.invalid && form.get('categorie')?.touched" />
-            <div class="invalid-feedback">Requis.</div>
-          </div>
-          <div class="col-md-6">
-            <label class="form-label fw-semibold">Marque <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" formControlName="marque"
-                   placeholder="Dell"
-                   [class.is-invalid]="form.get('marque')?.invalid && form.get('marque')?.touched" />
-            <div class="invalid-feedback">Requis.</div>
-          </div>
-          <div class="col-md-6">
-            <label class="form-label fw-semibold">Date d'achat <span class="text-danger">*</span></label>
-            <input type="date" class="form-control" formControlName="date_achat"
-                   [class.is-invalid]="form.get('date_achat')?.invalid && form.get('date_achat')?.touched" />
-            <div class="invalid-feedback">Requis.</div>
-          </div>
-          <div class="col-md-6">
-            <label class="form-label fw-semibold">État <span class="text-danger">*</span></label>
-            <select class="form-select" formControlName="etat">
-              <option *ngFor="let s of statusOptions" [value]="s.value">{{ s.label }}</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="d-flex gap-2 mt-4">
-          <button type="submit" class="btn btn-primary" [disabled]="saving">
-            <span *ngIf="saving" class="spinner-border spinner-border-sm me-1"></span>
-            {{ isEdit ? 'Enregistrer' : 'Créer' }}
-          </button>
-          <a routerLink="/equipments" class="btn btn-light">Annuler</a>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
-</div>
+}

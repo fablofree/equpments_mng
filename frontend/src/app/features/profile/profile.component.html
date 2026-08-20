@@ -6,12 +6,16 @@
 <div class="form-card">
   <div class="card">
     <div class="card-body p-4">
-      <div class="avatar-circle mb-4">{{ initials }}</div>
+      <div class="avatar-circle">{{ initials }}</div>
 
-      <div *ngIf="success" class="alert alert-success py-2">
-        <i class="bi bi-check-circle me-2"></i>{{ success }}
-      </div>
-      <div *ngIf="error" class="alert alert-danger py-2">{{ error }}</div>
+      @if (success()) {
+        <div class="alert alert-success py-2">
+          <i class="bi bi-check-circle me-2"></i>{{ success() }}
+        </div>
+      }
+      @if (error()) {
+        <div class="alert alert-danger py-2">{{ error() }}</div>
+      }
 
       <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
         <div class="row g-3">
@@ -31,20 +35,21 @@
             <label class="form-label fw-semibold">Adresse e-mail <span class="text-danger">*</span></label>
             <input type="email" class="form-control" formControlName="email"
                    [class.is-invalid]="form.get('email')?.invalid && form.get('email')?.touched" />
-            <div class="invalid-feedback">Adresse e-mail invalide.</div>
+            <div class="invalid-feedback">Email invalide.</div>
           </div>
           <div class="col-12">
-            <label class="form-label fw-semibold">Nouveau mot de passe <span class="text-muted small">(optionnel)</span></label>
+            <label class="form-label fw-semibold">
+              Nouveau mot de passe <span class="text-muted small">(optionnel)</span>
+            </label>
             <input type="password" class="form-control" formControlName="password"
                    placeholder="Laisser vide pour ne pas changer"
                    [class.is-invalid]="form.get('password')?.invalid && form.get('password')?.touched" />
             <div class="invalid-feedback">Min. 6 caractères.</div>
           </div>
         </div>
-
         <div class="mt-4">
-          <button type="submit" class="btn btn-primary" [disabled]="saving">
-            <span *ngIf="saving" class="spinner-border spinner-border-sm me-1"></span>
+          <button type="submit" class="btn btn-primary" [disabled]="saving()">
+            @if (saving()) { <span class="spinner-border spinner-border-sm me-1"></span> }
             Enregistrer les modifications
           </button>
         </div>

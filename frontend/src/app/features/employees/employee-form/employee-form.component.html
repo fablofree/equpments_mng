@@ -6,57 +6,56 @@
   </div>
 </div>
 
-<div *ngIf="loading" class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+@if (loading()) {
+  <div class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+} @else {
+  <div class="form-card">
+    <div class="card">
+      <div class="card-body p-4">
+        @if (error()) { <div class="alert alert-danger py-2">{{ error() }}</div> }
 
-<div class="form-card" *ngIf="!loading">
-  <div class="card">
-    <div class="card-body p-4">
-      <div *ngIf="error" class="alert alert-danger py-2">{{ error }}</div>
-
-      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
-        <div class="row g-3">
-          <div class="col-md-6">
-            <label class="form-label fw-semibold">Prénom <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" formControlName="prenom"
-                   [class.is-invalid]="form.get('prenom')?.invalid && form.get('prenom')?.touched" />
-            <div class="invalid-feedback">Requis.</div>
+        <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Prénom <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" formControlName="prenom"
+                     [class.is-invalid]="form.get('prenom')?.invalid && form.get('prenom')?.touched" />
+              <div class="invalid-feedback">Requis.</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Nom <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" formControlName="nom"
+                     [class.is-invalid]="form.get('nom')?.invalid && form.get('nom')?.touched" />
+              <div class="invalid-feedback">Requis.</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Service <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" formControlName="service" placeholder="Infrastructure, RH..."
+                     [class.is-invalid]="form.get('service')?.invalid && form.get('service')?.touched" />
+              <div class="invalid-feedback">Requis.</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Téléphone <span class="text-danger">*</span></label>
+              <input type="tel" class="form-control" formControlName="telephone" placeholder="0612345678"
+                     [class.is-invalid]="form.get('telephone')?.invalid && form.get('telephone')?.touched" />
+              <div class="invalid-feedback">Requis.</div>
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold">Email <span class="text-danger">*</span></label>
+              <input type="email" class="form-control" formControlName="email"
+                     [class.is-invalid]="form.get('email')?.invalid && form.get('email')?.touched" />
+              <div class="invalid-feedback">Email invalide.</div>
+            </div>
           </div>
-          <div class="col-md-6">
-            <label class="form-label fw-semibold">Nom <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" formControlName="nom"
-                   [class.is-invalid]="form.get('nom')?.invalid && form.get('nom')?.touched" />
-            <div class="invalid-feedback">Requis.</div>
+          <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn btn-primary" [disabled]="saving()">
+              @if (saving()) { <span class="spinner-border spinner-border-sm me-1"></span> }
+              {{ isEdit ? 'Enregistrer' : 'Créer' }}
+            </button>
+            <a routerLink="/employees" class="btn btn-light">Annuler</a>
           </div>
-          <div class="col-md-6">
-            <label class="form-label fw-semibold">Service <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" formControlName="service"
-                   placeholder="Infrastructure, RH..."
-                   [class.is-invalid]="form.get('service')?.invalid && form.get('service')?.touched" />
-            <div class="invalid-feedback">Requis.</div>
-          </div>
-          <div class="col-md-6">
-            <label class="form-label fw-semibold">Téléphone <span class="text-danger">*</span></label>
-            <input type="tel" class="form-control" formControlName="telephone"
-                   placeholder="0612345678"
-                   [class.is-invalid]="form.get('telephone')?.invalid && form.get('telephone')?.touched" />
-            <div class="invalid-feedback">Requis.</div>
-          </div>
-          <div class="col-12">
-            <label class="form-label fw-semibold">Email <span class="text-danger">*</span></label>
-            <input type="email" class="form-control" formControlName="email"
-                   [class.is-invalid]="form.get('email')?.invalid && form.get('email')?.touched" />
-            <div class="invalid-feedback">Email invalide.</div>
-          </div>
-        </div>
-
-        <div class="d-flex gap-2 mt-4">
-          <button type="submit" class="btn btn-primary" [disabled]="saving">
-            <span *ngIf="saving" class="spinner-border spinner-border-sm me-1"></span>
-            {{ isEdit ? 'Enregistrer' : 'Créer' }}
-          </button>
-          <a routerLink="/employees" class="btn btn-light">Annuler</a>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
-</div>
+}

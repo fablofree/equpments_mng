@@ -8,93 +8,95 @@
   </a>
 </div>
 
-<div *ngIf="successMessage" class="alert alert-success alert-dismissible py-2">
-  <i class="bi bi-check-circle me-2"></i>{{ successMessage }}
-</div>
-<div *ngIf="error" class="alert alert-danger py-2">{{ error }}</div>
+@if (successMessage()) {
+  <div class="alert alert-success py-2">
+    <i class="bi bi-check-circle me-2"></i>{{ successMessage() }}
+  </div>
+}
+@if (error()) {
+  <div class="alert alert-danger py-2">{{ error() }}</div>
+}
 
 <div class="card">
   <div class="card-header bg-transparent d-flex align-items-center gap-3 flex-wrap py-3">
     <div class="input-group search-box">
       <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Rechercher..."
-        [(ngModel)]="searchQuery"
-        (input)="onSearch()"
-      />
+      <input type="text" class="form-control" placeholder="Rechercher..."
+             [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event); onSearch()" />
     </div>
-    <span class="text-muted small ms-auto" *ngIf="pagination">
-      {{ pagination.total }} utilisateur(s)
-    </span>
+    @if (pagination()) {
+      <span class="text-muted small ms-auto">{{ pagination()!.total }} utilisateur(s)</span>
+    }
   </div>
 
   <div class="card-body p-0">
-    <div *ngIf="loading" class="text-center py-4">
-      <div class="spinner-border spinner-border-sm text-primary"></div>
-    </div>
-
-    <div class="table-responsive" *ngIf="!loading">
-      <table class="table table-hover mb-0">
-        <thead class="table-light">
-          <tr>
-            <th>#</th>
-            <th>Prénom</th>
-            <th>Nom</th>
-            <th>Email</th>
-            <th class="text-end">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of users">
-            <td class="text-muted small">{{ user.id }}</td>
-            <td>{{ user.prenom }}</td>
-            <td>{{ user.nom }}</td>
-            <td class="text-muted">{{ user.email }}</td>
-            <td class="text-end">
-              <a [routerLink]="['/users', user.id, 'edit']"
-                 class="btn btn-sm btn-outline-secondary btn-action me-1">
-                <i class="bi bi-pencil"></i>
-              </a>
-              <button class="btn btn-sm btn-outline-danger btn-action"
-                      (click)="confirmDelete(user.id)">
-                <i class="bi bi-trash"></i>
-              </button>
-            </td>
-          </tr>
-          <tr *ngIf="users.length === 0">
-            <td colspan="5" class="text-center text-muted py-4">Aucun utilisateur trouvé.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    @if (loading()) {
+      <div class="text-center py-4">
+        <div class="spinner-border spinner-border-sm text-primary"></div>
+      </div>
+    } @else {
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>#</th><th>Prénom</th><th>Nom</th><th>Email</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (user of users(); track user.id) {
+              <tr>
+                <td class="text-muted small">{{ user.id }}</td>
+                <td>{{ user.prenom }}</td>
+                <td>{{ user.nom }}</td>
+                <td class="text-muted">{{ user.email }}</td>
+                <td class="text-end">
+                  <a [routerLink]="['/users', user.id, 'edit']"
+                     class="btn btn-sm btn-outline-secondary btn-action me-1">
+                    <i class="bi bi-pencil"></i>
+                  </a>
+                  <button class="btn btn-sm btn-outline-danger btn-action"
+                          (click)="confirmDelete(user.id)">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            } @empty {
+              <tr><td colspan="5" class="text-center text-muted py-4">Aucun utilisateur trouvé.</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
   </div>
 
-  <div class="card-footer bg-transparent d-flex justify-content-end" *ngIf="pagination">
-    <app-pagination [pagination]="pagination" (pageChange)="load($event)" />
-  </div>
+  @if (pagination()) {
+    <div class="card-footer bg-transparent d-flex justify-content-end">
+      <app-pagination [pagination]="pagination()!" (pageChange)="load($event)" />
+    </div>
+  }
 </div>
 
-<!-- Delete Confirmation Modal -->
-<div class="modal fade" [class.show]="deleteId !== null" [style.display]="deleteId !== null ? 'block' : 'none'"
-     tabindex="-1" role="dialog" *ngIf="deleteId !== null">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header border-0">
-        <h5 class="modal-title fw-semibold">Confirmer la suppression</h5>
-      </div>
-      <div class="modal-body">
-        <p class="mb-0">Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible.</p>
-      </div>
-      <div class="modal-footer border-0">
-        <button class="btn btn-light" (click)="cancelDelete()" [disabled]="deleteLoading">Annuler</button>
-        <button class="btn btn-danger" (click)="doDelete()" [disabled]="deleteLoading">
-          <span *ngIf="deleteLoading" class="spinner-border spinner-border-sm me-1"></span>
-          Supprimer
-        </button>
+<!-- Delete Modal -->
+@if (deleteId() !== null) {
+  <div class="modal fade show" style="display:block;" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-0">
+          <h5 class="modal-title fw-semibold">Confirmer la suppression</h5>
+        </div>
+        <div class="modal-body">
+          <p class="mb-0">Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible.</p>
+        </div>
+        <div class="modal-footer border-0">
+          <button class="btn btn-light" (click)="cancelDelete()" [disabled]="deleteLoading()">Annuler</button>
+          <button class="btn btn-danger" (click)="doDelete()" [disabled]="deleteLoading()">
+            @if (deleteLoading()) { <span class="spinner-border spinner-border-sm me-1"></span> }
+            Supprimer
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<div class="modal-backdrop fade show" *ngIf="deleteId !== null"></div>
+  <div class="modal-backdrop fade show"></div>
+}

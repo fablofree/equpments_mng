@@ -1,23 +1,37 @@
 <nav class="sidebar">
+
+  <!-- Brand / Logo -->
   <a class="sidebar-brand" routerLink="/dashboard">
-    <i class="bi bi-box-seam"></i>
-    EquipManager
+    @if (appSettings.settings().logoDataUrl) {
+      <img [src]="appSettings.settings().logoDataUrl!"
+           class="sidebar-logo-img" alt="Logo" />
+    } @else {
+      <i class="bi bi-box-seam"></i>
+    }
+    <span class="sidebar-brand-name">{{ appSettings.settings().appName }}</span>
   </a>
 
+  <!-- Navigation -->
   <div class="sidebar-nav">
     @for (section of sections; track section) {
       <div class="nav-section-title">{{ section }}</div>
       @for (item of itemsFor(section); track item.route) {
-        <a
-          class="sidebar-link"
-          [routerLink]="item.route"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }"
-        >
+        <a class="sidebar-link"
+           [routerLink]="item.route"
+           routerLinkActive="active"
+           [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }">
           <i class="bi {{ item.icon }}"></i>
           {{ item.label }}
         </a>
       }
     }
   </div>
+
+  <!-- App tagline at bottom -->
+  @if (appSettings.settings().tagline) {
+    <div class="sidebar-footer">
+      <span class="small text-muted">{{ appSettings.settings().tagline }}</span>
+    </div>
+  }
+
 </nav>

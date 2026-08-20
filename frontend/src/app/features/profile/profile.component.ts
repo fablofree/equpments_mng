@@ -1,11 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgIf } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-profile',
-  imports: [ReactiveFormsModule, NgIf],
+  imports: [ReactiveFormsModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
@@ -13,9 +12,9 @@ export class ProfileComponent {
   auth = inject(AuthService);
   private fb = inject(FormBuilder);
 
-  saving = false;
-  success = '';
-  error = '';
+  saving = signal(false);
+  success = signal('');
+  error = signal('');
 
   form = this.fb.group({
     prenom: [this.auth.currentUser()?.prenom ?? '', Validators.required],
@@ -32,9 +31,7 @@ export class ProfileComponent {
 
   submit(): void {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
-    this.saving = true;
-    this.success = '';
-    this.error = '';
+    this.saving.set(true); this.success.set(''); this.error.set('');
 
     const raw = this.form.value;
     const payload: any = { nom: raw.nom, prenom: raw.prenom, email: raw.email };
@@ -42,18 +39,11 @@ export class ProfileComponent {
 
     this.auth.updateProfile(payload).subscribe({
       next: res => {
-        if (res.success) {
-          this.success = 'Profil mis à jour avec succès.';
-          this.form.patchValue({ password: '' });
-        } else {
-          this.error = res.message;
-        }
-        this.saving = false;
+        if (res.success) { this.success.set('Profil mis à jour avec succès.'); this.form.patchValue({ password: '' }); }
+        else this.error.set(res.message);
+        this.saving.set(false);
       },
-      error: err => {
-        this.error = err.error?.message ?? 'Une erreur est survenue.';
-        this.saving = false;
-      }
+      error: err => { this.error.set(err.error?.message ?? 'Une erreur est survenue.'); this.saving.set(false); }
     });
   }
 }

@@ -1,10 +1,9 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { NgFor, NgIf } from '@angular/common';
 import { Pagination } from '../../../core/models/api-response.model';
 
 @Component({
   selector: 'app-pagination',
-  imports: [NgFor, NgIf],
+  imports: [],
   templateUrl: './pagination.component.html',
   styleUrl: './pagination.component.css'
 })

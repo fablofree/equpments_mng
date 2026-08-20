@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
+import { AppSettingsService } from '../../core/services/app-settings.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,6 +11,7 @@ import { AuthService } from '../../core/services/auth.service';
 })
 export class NavbarComponent {
   auth = inject(AuthService);
+  appSettings = inject(AppSettingsService);
 
   get initials(): string {
     const u = this.auth.currentUser();

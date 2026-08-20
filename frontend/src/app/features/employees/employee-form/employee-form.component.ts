@@ -1,12 +1,11 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { NgIf } from '@angular/common';
 import { EmployeeService } from '../../../core/services/employee.service';
 
 @Component({
   selector: 'app-employee-form',
-  imports: [ReactiveFormsModule, RouterLink, NgIf],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './employee-form.component.html',
   styleUrl: './employee-form.component.css'
 })
@@ -16,10 +15,10 @@ export class EmployeeFormComponent implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
-  editId: number | null = null;
-  loading = false;
-  saving = false;
-  error = '';
+  editId = signal<number | null>(null);
+  loading = signal(false);
+  saving = signal(false);
+  error = signal('');
 
   form = this.fb.group({
     prenom: ['', Validators.required],
@@ -29,39 +28,28 @@ export class EmployeeFormComponent implements OnInit {
     email: ['', [Validators.required, Validators.email]]
   });
 
-  get isEdit(): boolean { return !!this.editId; }
+  get isEdit(): boolean { return !!this.editId(); }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.editId = +id;
-      this.loading = true;
-      this.service.getById(this.editId).subscribe({
-        next: res => {
-          if (res.success && res.data) this.form.patchValue(res.data);
-          this.loading = false;
-        },
-        error: () => { this.error = 'Employé introuvable.'; this.loading = false; }
+      this.editId.set(+id);
+      this.loading.set(true);
+      this.service.getById(+id).subscribe({
+        next: res => { if (res.success && res.data) this.form.patchValue(res.data); this.loading.set(false); },
+        error: () => { this.error.set('Employé introuvable.'); this.loading.set(false); }
       });
     }
   }
 
   submit(): void {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
-    this.saving = true;
-    this.error = '';
+    this.saving.set(true); this.error.set('');
     const payload = this.form.value as any;
-
-    const req = this.isEdit
-      ? this.service.update(this.editId!, payload)
-      : this.service.create(payload);
-
+    const req = this.isEdit ? this.service.update(this.editId()!, payload) : this.service.create(payload);
     req.subscribe({
-      next: res => {
-        if (res.success) this.router.navigate(['/employees']);
-        else { this.error = res.message; this.saving = false; }
-      },
-      error: err => { this.error = err.error?.message ?? 'Erreur.'; this.saving = false; }
+      next: res => { if (res.success) this.router.navigate(['/employees']); else { this.error.set(res.message); this.saving.set(false); } },
+      error: err => { this.error.set(err.error?.message ?? 'Erreur.'); this.saving.set(false); }
     });
   }
 }

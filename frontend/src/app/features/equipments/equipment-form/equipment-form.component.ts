@@ -1,13 +1,12 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { NgFor, NgIf } from '@angular/common';
 import { EquipmentService } from '../../../core/services/equipment.service';
 import { EquipmentStatus } from '../../../core/models/equipment.model';
 
 @Component({
   selector: 'app-equipment-form',
-  imports: [ReactiveFormsModule, RouterLink, NgFor, NgIf],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './equipment-form.component.html',
   styleUrl: './equipment-form.component.css'
 })
@@ -17,10 +16,10 @@ export class EquipmentFormComponent implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
-  editId: number | null = null;
-  loading = false;
-  saving = false;
-  error = '';
+  editId = signal<number | null>(null);
+  loading = signal(false);
+  saving = signal(false);
+  error = signal('');
 
   readonly statusOptions: { value: EquipmentStatus; label: string }[] = [
     { value: 'disponible', label: 'Disponible' },
@@ -38,39 +37,28 @@ export class EquipmentFormComponent implements OnInit {
     etat: ['disponible' as EquipmentStatus, Validators.required]
   });
 
-  get isEdit(): boolean { return !!this.editId; }
+  get isEdit(): boolean { return !!this.editId(); }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.editId = +id;
-      this.loading = true;
-      this.service.getById(this.editId).subscribe({
-        next: res => {
-          if (res.success && res.data) this.form.patchValue(res.data);
-          this.loading = false;
-        },
-        error: () => { this.error = 'Équipement introuvable.'; this.loading = false; }
+      this.editId.set(+id);
+      this.loading.set(true);
+      this.service.getById(+id).subscribe({
+        next: res => { if (res.success && res.data) this.form.patchValue(res.data); this.loading.set(false); },
+        error: () => { this.error.set('Équipement introuvable.'); this.loading.set(false); }
       });
     }
   }
 
   submit(): void {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
-    this.saving = true;
-    this.error = '';
+    this.saving.set(true); this.error.set('');
     const payload = this.form.value as any;
-
-    const req = this.isEdit
-      ? this.service.update(this.editId!, payload)
-      : this.service.create(payload);
-
+    const req = this.isEdit ? this.service.update(this.editId()!, payload) : this.service.create(payload);
     req.subscribe({
-      next: res => {
-        if (res.success) this.router.navigate(['/equipments']);
-        else { this.error = res.message; this.saving = false; }
-      },
-      error: err => { this.error = err.error?.message ?? 'Erreur.'; this.saving = false; }
+      next: res => { if (res.success) this.router.navigate(['/equipments']); else { this.error.set(res.message); this.saving.set(false); } },
+      error: err => { this.error.set(err.error?.message ?? 'Erreur.'); this.saving.set(false); }
     });
   }
 }

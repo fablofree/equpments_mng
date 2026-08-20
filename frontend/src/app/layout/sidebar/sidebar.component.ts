@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { AppSettingsService } from '../../core/services/app-settings.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,13 +9,16 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   styleUrl: './sidebar.component.css'
 })
 export class SidebarComponent {
+  appSettings = inject(AppSettingsService);
+
   navItems = [
-    { label: 'Tableau de bord', icon: 'bi-speedometer2', route: '/dashboard', section: 'Principal' },
-    { label: 'Employés', icon: 'bi-people', route: '/employees', section: 'Gestion' },
-    { label: 'Équipements', icon: 'bi-laptop', route: '/equipments', section: 'Gestion' },
-    { label: 'Affectations', icon: 'bi-link-45deg', route: '/assignments', section: 'Gestion' },
-    { label: 'Utilisateurs', icon: 'bi-person-gear', route: '/users', section: 'Administration' },
-    { label: 'Mon profil', icon: 'bi-person-circle', route: '/profile', section: 'Administration' }
+    { label: 'Tableau de bord', icon: 'bi-speedometer2', route: '/dashboard',    section: 'Principal' },
+    { label: 'Employés',        icon: 'bi-people',        route: '/employees',    section: 'Gestion' },
+    { label: 'Équipements',     icon: 'bi-laptop',        route: '/equipments',   section: 'Gestion' },
+    { label: 'Affectations',    icon: 'bi-link-45deg',    route: '/assignments',  section: 'Gestion' },
+    { label: 'Utilisateurs',    icon: 'bi-person-gear',   route: '/users',        section: 'Administration' },
+    { label: 'Mon profil',      icon: 'bi-person-circle', route: '/profile',      section: 'Administration' },
+    { label: 'Paramètres',      icon: 'bi-gear',          route: '/settings',     section: 'Administration' }
   ];
 
   get sections(): string[] {
