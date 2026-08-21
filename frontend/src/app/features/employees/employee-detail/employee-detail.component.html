@@ -1,0 +1,103 @@
+<div class="d-flex align-items-center gap-3 mb-4">
+  <a routerLink="/employees" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i></a>
+  <div>
+    <h2 class="h4 fw-bold mb-0">Fiche employé</h2>
+    <p class="text-muted small mb-0">Informations et historique des affectations</p>
+  </div>
+</div>
+
+@if (loading() && !employee()) {
+  <div class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+} @else if (error()) {
+  <div class="alert alert-danger">{{ error() }}</div>
+} @else if (employee()) {
+  <div class="row g-4">
+
+    <!-- Info card -->
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-body text-center py-4">
+          <div class="avatar-circle avatar-circle-lg mx-auto mb-3">{{ initials() }}</div>
+          <h5 class="fw-bold mb-1">{{ employee()!.prenom }} {{ employee()!.nom }}</h5>
+          <span class="badge bg-primary bg-opacity-10 text-primary mb-3">{{ employee()!.service }}</span>
+          <div class="text-muted small d-flex flex-column gap-1">
+            <div><i class="bi bi-envelope me-2"></i>{{ employee()!.email }}</div>
+            <div><i class="bi bi-telephone me-2"></i>{{ employee()!.telephone }}</div>
+          </div>
+        </div>
+        <div class="card-footer bg-transparent text-center pb-3">
+          <a [routerLink]="['/employees', employee()!.id, 'edit']" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-pencil me-1"></i>Modifier
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- History -->
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-header bg-transparent fw-semibold d-flex align-items-center justify-content-between">
+          <span><i class="bi bi-clock-history me-2 text-primary"></i>Historique des affectations</span>
+          @if (assignmentPagination()) {
+            <span class="badge bg-primary bg-opacity-10 text-primary">
+              {{ assignmentPagination()!.total }}
+            </span>
+          }
+        </div>
+        <div class="card-body p-0">
+          @if (historyLoading()) {
+            <div class="text-center py-3">
+              <div class="spinner-border spinner-border-sm text-primary"></div>
+            </div>
+          } @else {
+            <div class="table-responsive">
+              <table class="table table-hover mb-0 small">
+                <thead class="table-light">
+                  <tr>
+                    <th>Équipement</th><th>Réf.</th>
+                    <th>Affecté le</th><th>Retourné le</th><th>Statut</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (a of assignments(); track a.id) {
+                    <tr>
+                      <td>
+                        <a [routerLink]="['/equipments', a.equipement_id]"
+                           class="text-decoration-none fw-semibold">
+                          {{ a.equipement_nom ?? '—' }}
+                        </a>
+                      </td>
+                      <td><code>{{ a.equipement_ref ?? '—' }}</code></td>
+                      <td>{{ a.date_affectation | date:'dd/MM/yyyy' }}</td>
+                      <td>{{ a.date_retour ? (a.date_retour | date:'dd/MM/yyyy') : '—' }}</td>
+                      <td>
+                        <span class="badge rounded-pill"
+                              [class.bg-success]="!a.date_retour"
+                              [class.bg-secondary]="!!a.date_retour">
+                          {{ !a.date_retour ? 'Active' : 'Retournée' }}
+                        </span>
+                      </td>
+                    </tr>
+                  } @empty {
+                    <tr>
+                      <td colspan="5" class="text-center text-muted py-4">
+                        <i class="bi bi-inbox me-2"></i>Aucune affectation enregistrée.
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        </div>
+        @if (assignmentPagination() && assignmentPagination()!.totalPages > 1) {
+          <div class="card-footer bg-transparent d-flex justify-content-end">
+            <app-pagination [pagination]="assignmentPagination()!"
+                           (pageChange)="loadHistory($event)" />
+          </div>
+        }
+      </div>
+    </div>
+
+  </div>
+}

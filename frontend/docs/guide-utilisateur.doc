@@ -1,0 +1,503 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+      xmlns:w="urn:schemas-microsoft-com:office:word"
+      xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="ProgId" content="Word.Document" />
+  <meta name="Generator" content="Microsoft Word 15" />
+  <title>Guide Utilisateur — EquipManager</title>
+  <style>
+    body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1e293b;
+           margin: 2.5cm 2cm; line-height: 1.6; }
+    h1 { font-size: 22pt; color: #1e3a5f; border-bottom: 3px solid #2563eb;
+         padding-bottom: 6pt; margin-top: 24pt; }
+    h2 { font-size: 15pt; color: #2563eb; margin-top: 18pt; margin-bottom: 6pt; }
+    h3 { font-size: 12pt; color: #334155; margin-top: 14pt; margin-bottom: 4pt; }
+    p  { margin: 6pt 0; text-align: justify; }
+    ul, ol { margin: 6pt 0 6pt 1.2cm; }
+    li { margin-bottom: 3pt; }
+    table { width: 100%; border-collapse: collapse; margin: 10pt 0; font-size: 10pt; }
+    th { background: #2563eb; color: #fff; padding: 6pt 8pt; text-align: left; }
+    td { border: 1px solid #cbd5e1; padding: 5pt 8pt; vertical-align: top; }
+    tr:nth-child(even) td { background: #f1f5f9; }
+    .cover { text-align: center; padding: 60pt 0 40pt; page-break-after: always; }
+    .cover h1 { font-size: 28pt; border: none; color: #1e3a5f; }
+    .cover .subtitle { font-size: 14pt; color: #64748b; margin-top: 8pt; }
+    .cover .version { font-size: 10pt; color: #94a3b8; margin-top: 40pt; }
+    .note { background: #eff6ff; border-left: 4px solid #2563eb; padding: 6pt 10pt;
+            margin: 8pt 0; font-size: 10pt; }
+    .warning { background: #fff7ed; border-left: 4px solid #f59e0b; padding: 6pt 10pt;
+               margin: 8pt 0; font-size: 10pt; }
+    .tip { background: #f0fdf4; border-left: 4px solid #22c55e; padding: 6pt 10pt;
+           margin: 8pt 0; font-size: 10pt; }
+    code { background: #f1f5f9; padding: 1pt 4pt; border-radius: 3pt;
+           font-family: Consolas, monospace; font-size: 10pt; }
+    .toc { background: #f8fafc; border: 1px solid #e2e8f0; padding: 12pt 16pt;
+           margin: 16pt 0; border-radius: 4pt; }
+    .toc h2 { color: #334155; font-size: 13pt; margin-top: 0; }
+    .toc ol { margin-left: 1cm; }
+    .toc li { margin-bottom: 4pt; }
+    .section-num { color: #2563eb; font-weight: bold; }
+    hr { border: none; border-top: 1px solid #e2e8f0; margin: 16pt 0; }
+  </style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="cover">
+  <p style="font-size:48pt; margin:0;">&#128187;</p>
+  <h1>EquipManager</h1>
+  <p class="subtitle">Guide Utilisateur<br/>Gestion du parc informatique</p>
+  <hr style="border-top: 2px solid #2563eb; margin: 30pt auto; width: 40%;" />
+  <p class="version">
+    Version 1.0 &nbsp;|&nbsp; 2026<br/>
+    Document destiné aux administrateurs et utilisateurs du système
+  </p>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc">
+  <h2>Table des matières</h2>
+  <ol>
+    <li>Introduction et objectifs</li>
+    <li>Connexion et déconnexion</li>
+    <li>Tableau de bord (Dashboard)</li>
+    <li>Gestion des employés</li>
+    <li>Gestion des équipements</li>
+    <li>Gestion des affectations</li>
+    <li>Gestion des utilisateurs</li>
+    <li>Mon profil</li>
+    <li>Paramètres de l'application</li>
+    <li>Données de référence (Services et Catégories)</li>
+    <li>Résolution des problèmes courants</li>
+  </ol>
+</div>
+
+<hr />
+
+<!-- 1. INTRODUCTION -->
+<h1><span class="section-num">1.</span> Introduction et objectifs</h1>
+
+<p>
+  <strong>EquipManager</strong> est une application web de gestion du parc informatique.
+  Elle permet de suivre les équipements d'une organisation, de gérer les employés et
+  d'affecter les équipements aux collaborateurs avec un historique complet.
+</p>
+
+<h3>Fonctionnalités principales</h3>
+<ul>
+  <li>Inventaire complet des équipements informatiques</li>
+  <li>Registre des employés et de leurs services</li>
+  <li>Gestion des affectations avec suivi des retours</li>
+  <li>Historique complet par employé et par équipement</li>
+  <li>Tableau de bord avec indicateurs clés</li>
+  <li>Personnalisation de l'interface (logo, couleurs, informations de l'entreprise)</li>
+</ul>
+
+<div class="note">
+  <strong>Prérequis :</strong> Un navigateur moderne (Chrome, Firefox, Edge). Aucune installation
+  locale n'est requise côté utilisateur.
+</div>
+
+<hr />
+
+<!-- 2. CONNEXION -->
+<h1><span class="section-num">2.</span> Connexion et déconnexion</h1>
+
+<h2>2.1 Se connecter</h2>
+<ol>
+  <li>Ouvrez l'adresse de l'application dans votre navigateur.</li>
+  <li>Sur la page de connexion, saisissez votre <strong>adresse e-mail</strong> et votre
+      <strong>mot de passe</strong>.</li>
+  <li>Cliquez sur <strong>Se connecter</strong>.</li>
+  <li>En cas de succès, vous êtes redirigé vers le tableau de bord.</li>
+</ol>
+
+<div class="warning">
+  <strong>Attention :</strong> Si le message « Identifiants incorrects » s'affiche, vérifiez
+  que votre adresse e-mail et votre mot de passe sont exacts. Les mots de passe sont
+  sensibles à la casse.
+</div>
+
+<h2>2.2 Afficher / masquer le mot de passe</h2>
+<p>
+  Cliquez sur l'icône œil (<strong>&#128065;</strong>) à droite du champ mot de passe pour
+  basculer entre l'affichage en clair et masqué.
+</p>
+
+<h2>2.3 Se déconnecter</h2>
+<ol>
+  <li>Cliquez sur votre avatar ou nom en haut à droite de la barre de navigation.</li>
+  <li>Dans le menu déroulant, cliquez sur <strong>Se déconnecter</strong>.</li>
+  <li>Vous êtes redirigé vers la page de connexion.</li>
+</ol>
+
+<hr />
+
+<!-- 3. DASHBOARD -->
+<h1><span class="section-num">3.</span> Tableau de bord</h1>
+
+<p>
+  Le tableau de bord est la page d'accueil après connexion. Il affiche une synthèse
+  en temps réel de votre parc informatique.
+</p>
+
+<h2>3.1 Cartes indicateurs (KPI)</h2>
+<table>
+  <tr><th>Indicateur</th><th>Description</th></tr>
+  <tr><td>Total équipements</td><td>Nombre total d'équipements enregistrés</td></tr>
+  <tr><td>Employés</td><td>Nombre total d'employés enregistrés</td></tr>
+  <tr><td>Affectations actives</td><td>Équipements actuellement attribués à un employé</td></tr>
+  <tr><td>En maintenance</td><td>Équipements en cours de maintenance</td></tr>
+</table>
+
+<h2>3.2 Répartition par statut</h2>
+<p>
+  Des barres de progression indiquent la proportion de chaque statut d'équipement :
+  Disponible, Affecté, En maintenance, Hors service.
+</p>
+
+<h2>3.3 Accès rapides</h2>
+<p>Des boutons permettent d'accéder directement aux pages principales :</p>
+<ul>
+  <li>Gérer les équipements</li>
+  <li>Gérer les employés</li>
+  <li>Nouvelle affectation</li>
+</ul>
+
+<hr />
+
+<!-- 4. EMPLOYES -->
+<h1><span class="section-num">4.</span> Gestion des employés</h1>
+
+<h2>4.1 Liste des employés</h2>
+<p>
+  Accédez à la liste via le menu latéral <strong>Employés</strong>.
+  Le tableau affiche : Prénom, Nom, Service, Email, Téléphone.
+</p>
+
+<p><strong>Recherche :</strong> Saisissez un nom ou un service dans le champ de recherche.
+La liste se filtre automatiquement après un court délai.</p>
+
+<p><strong>Pagination :</strong> Naviguez entre les pages en bas du tableau.</p>
+
+<h2>4.2 Voir la fiche d'un employé</h2>
+<p>
+  Cliquez sur l'icône <strong>œil</strong> (&#128065;) dans la colonne Actions pour accéder à
+  la fiche détaillée. Cette fiche affiche :
+</p>
+<ul>
+  <li>Les informations de l'employé (nom, service, email, téléphone)</li>
+  <li>L'historique complet de toutes ses affectations</li>
+</ul>
+<p>
+  Dans le tableau d'historique, cliquez sur le nom d'un équipement pour accéder
+  directement à sa fiche.
+</p>
+
+<h2>4.3 Créer un employé</h2>
+<ol>
+  <li>Cliquez sur <strong>Ajouter</strong> en haut à droite de la liste.</li>
+  <li>Remplissez les champs : Prénom, Nom, Service (liste déroulante), Téléphone, Email.</li>
+  <li>Cliquez sur <strong>Créer</strong>.</li>
+</ol>
+
+<div class="tip">
+  <strong>Astuce :</strong> Le service est sélectionné via une liste déroulante. Pour ajouter
+  un nouveau service, allez dans <strong>Paramètres → Services des employés</strong>.
+</div>
+
+<h2>4.4 Modifier un employé</h2>
+<ol>
+  <li>Cliquez sur l'icône <strong>crayon</strong> dans la colonne Actions.</li>
+  <li>Modifiez les champs souhaités.</li>
+  <li>Cliquez sur <strong>Enregistrer</strong>.</li>
+</ol>
+
+<h2>4.5 Supprimer un employé</h2>
+<ol>
+  <li>Cliquez sur l'icône <strong>corbeille</strong> dans la colonne Actions.</li>
+  <li>Confirmez la suppression dans la fenêtre de dialogue.</li>
+</ol>
+
+<div class="warning">
+  <strong>Attention :</strong> La suppression est irréversible. Un employé avec des
+  affectations actives ne peut pas être supprimé.
+</div>
+
+<hr />
+
+<!-- 5. EQUIPEMENTS -->
+<h1><span class="section-num">5.</span> Gestion des équipements</h1>
+
+<h2>5.1 Liste des équipements</h2>
+<p>
+  Accédez via le menu <strong>Équipements</strong>. Le tableau affiche :
+  Référence, Nom, Catégorie, Marque, Date d'achat, État.
+</p>
+
+<p><strong>Filtrage par état :</strong> Utilisez le menu déroulant en haut du tableau pour
+afficher tous les équipements ou filtrer par statut.</p>
+
+<h3>Codes couleur des statuts</h3>
+<table>
+  <tr><th>Statut</th><th>Signification</th></tr>
+  <tr><td>Disponible (vert)</td><td>Équipement libre, peut être affecté</td></tr>
+  <tr><td>Affecté (bleu)</td><td>Attribué à un employé</td></tr>
+  <tr><td>En maintenance (orange)</td><td>En cours de réparation ou de maintenance</td></tr>
+  <tr><td>Hors service (rouge)</td><td>Inutilisable, à remplacer</td></tr>
+</table>
+
+<h2>5.2 Voir la fiche d'un équipement</h2>
+<p>
+  Cliquez sur l'icône <strong>œil</strong> pour accéder à la fiche. Elle affiche :
+</p>
+<ul>
+  <li>Les caractéristiques (référence, catégorie, marque, date d'achat, état actuel)</li>
+  <li>L'historique complet de toutes ses affectations</li>
+</ul>
+<p>
+  Dans le tableau d'historique, cliquez sur le nom d'un employé pour accéder à sa fiche.
+</p>
+
+<h2>5.3 Créer un équipement</h2>
+<ol>
+  <li>Cliquez sur <strong>Ajouter</strong>.</li>
+  <li>Remplissez : Référence (unique), Nom, Catégorie (liste déroulante), Marque,
+      Date d'achat, État initial.</li>
+  <li>Cliquez sur <strong>Créer</strong>.</li>
+</ol>
+
+<div class="tip">
+  <strong>Astuce :</strong> La catégorie est sélectionnée via une liste. Pour ajouter une
+  catégorie, allez dans <strong>Paramètres → Catégories d'équipements</strong>.
+</div>
+
+<h2>5.4 Modifier un équipement</h2>
+<p>Cliquez sur le crayon, modifiez les champs, puis cliquez sur <strong>Enregistrer</strong>.</p>
+
+<div class="note">
+  <strong>Important :</strong> Si un équipement est <strong>Affecté</strong>, le champ État
+  est verrouillé et ne peut pas être modifié. Pour changer l'état d'un équipement affecté,
+  enregistrez d'abord le retour de l'affectation active.
+</div>
+
+<hr />
+
+<!-- 6. AFFECTATIONS -->
+<h1><span class="section-num">6.</span> Gestion des affectations</h1>
+
+<h2>6.1 Liste des affectations</h2>
+<p>Accédez via le menu <strong>Affectations</strong>. Filtrez par :</p>
+<ul>
+  <li><strong>Toutes les affectations</strong> — historique complet</li>
+  <li><strong>Actives seulement</strong> — équipements actuellement attribués</li>
+  <li><strong>Retournées seulement</strong> — affectations terminées</li>
+</ul>
+
+<p>
+  Dans la liste, cliquez sur le <strong>nom d'un employé</strong> pour accéder à sa fiche,
+  ou sur le <strong>nom d'un équipement</strong> pour accéder à la fiche de cet équipement.
+</p>
+
+<h2>6.2 Créer une affectation</h2>
+<ol>
+  <li>Cliquez sur <strong>Nouvelle affectation</strong>.</li>
+  <li>Sélectionnez un <strong>employé</strong> dans la liste déroulante.</li>
+  <li>Sélectionnez un <strong>équipement</strong> (seuls les équipements disponibles sont proposés).</li>
+  <li>Vérifiez ou modifiez la <strong>date d'affectation</strong> (défaut : aujourd'hui).</li>
+  <li>Optionnellement, renseignez une <strong>date de retour prévue</strong>.</li>
+  <li>Cliquez sur <strong>Créer l'affectation</strong>.</li>
+</ol>
+
+<div class="note">
+  <strong>Note :</strong> La création d'une affectation change automatiquement le statut de
+  l'équipement de <em>Disponible</em> à <em>Affecté</em>.
+</div>
+
+<h2>6.3 Enregistrer un retour</h2>
+<ol>
+  <li>Dans la liste des affectations actives, cliquez sur l'icône <strong>retour</strong>
+      (&#8629;) dans la colonne Actions.</li>
+  <li>Confirmez dans la fenêtre de dialogue.</li>
+  <li>Le retour est enregistré à la date du jour et l'équipement redevient Disponible.</li>
+</ol>
+
+<hr />
+
+<!-- 7. UTILISATEURS -->
+<h1><span class="section-num">7.</span> Gestion des utilisateurs</h1>
+
+<p>
+  Seul l'<strong>administrateur</strong> peut accéder à la gestion des utilisateurs via le
+  menu <strong>Utilisateurs</strong>.
+</p>
+
+<h2>7.1 Créer un compte utilisateur</h2>
+<ol>
+  <li>Cliquez sur <strong>Ajouter</strong>.</li>
+  <li>Saisissez : Prénom, Nom, Email, Mot de passe (et confirmation).</li>
+  <li>Cliquez sur <strong>Créer</strong>.</li>
+</ol>
+
+<h2>7.2 Modifier un utilisateur</h2>
+<p>
+  Cliquez sur le crayon. Le mot de passe est facultatif lors d'une modification :
+  laissez le champ vide pour le conserver.
+</p>
+
+<h2>7.3 Supprimer un utilisateur</h2>
+<p>Cliquez sur la corbeille et confirmez. Action irréversible.</p>
+
+<div class="warning">
+  <strong>Attention :</strong> Ne supprimez pas votre propre compte administrateur.
+</div>
+
+<hr />
+
+<!-- 8. PROFIL -->
+<h1><span class="section-num">8.</span> Mon profil</h1>
+
+<p>
+  Accédez à votre profil via le menu déroulant en haut à droite (votre nom)
+  → <strong>Mon profil</strong>, ou via le menu latéral.
+</p>
+
+<p>Vous pouvez modifier :</p>
+<ul>
+  <li>Votre <strong>prénom</strong> et <strong>nom</strong></li>
+  <li>Votre <strong>adresse e-mail</strong></li>
+  <li>Votre <strong>mot de passe</strong> (laissez vide pour le conserver)</li>
+</ul>
+
+<p>Cliquez sur <strong>Enregistrer les modifications</strong> pour valider.</p>
+
+<hr />
+
+<!-- 9. PARAMETRES -->
+<h1><span class="section-num">9.</span> Paramètres de l'application</h1>
+
+<p>
+  Accédez via le menu <strong>Paramètres</strong> (icône engrenage en bas du menu latéral
+  ou via le menu déroulant utilisateur).
+</p>
+
+<h2>9.1 Logo</h2>
+<ol>
+  <li>Cliquez sur <strong>Choisir un logo</strong>.</li>
+  <li>Sélectionnez un fichier image (PNG, JPG ou SVG, max 2 Mo).</li>
+  <li>Le logo s'affiche en aperçu.</li>
+  <li>Cliquez sur <strong>Enregistrer les paramètres</strong>.</li>
+</ol>
+<p>
+  Le logo apparaît sur la page de connexion, dans la barre latérale et comme favicon
+  de l'onglet navigateur.
+</p>
+
+<h2>9.2 Identité de l'application</h2>
+<ul>
+  <li><strong>Nom :</strong> Affiché dans la barre de navigation et la page de connexion.</li>
+  <li><strong>Slogan :</strong> Sous-titre affiché en bas de la barre latérale.</li>
+  <li><strong>Nom de l'entreprise :</strong> Affiché dans le pied de page de la connexion.</li>
+</ul>
+
+<h2>9.3 Couleur principale</h2>
+<p>
+  Utilisez le sélecteur de couleur pour choisir la teinte principale de l'interface.
+  Un aperçu en temps réel s'affiche avant d'enregistrer.
+</p>
+
+<h2>9.4 Informations de contact</h2>
+<p>Email et téléphone affichés sur la page de connexion.</p>
+
+<hr />
+
+<!-- 10. DONNEES DE REFERENCE -->
+<h1><span class="section-num">10.</span> Données de référence</h1>
+
+<p>
+  Les données de référence permettent de pré-remplir les listes déroulantes des formulaires
+  d'employés et d'équipements. Elles sont gérées directement depuis la page Paramètres.
+</p>
+
+<h2>10.1 Services des employés</h2>
+<p>
+  La section <strong>Services des employés</strong> affiche la liste des services disponibles
+  dans le formulaire de création/modification d'un employé.
+</p>
+<ul>
+  <li><strong>Ajouter :</strong> Saisissez le nom du service et appuyez sur Entrée ou cliquez sur +.</li>
+  <li><strong>Supprimer :</strong> Cliquez sur l'icône corbeille à droite du service.</li>
+  <li><strong>Réinitialiser :</strong> Cliquez sur l'icône ↺ pour revenir aux valeurs par défaut.</li>
+</ul>
+
+<h3>Services par défaut</h3>
+<p>Commercial, Direction, Finance, Informatique, Infrastructure, Juridique,
+   Logistique, Marketing, Ressources Humaines.</p>
+
+<h2>10.2 Catégories d'équipements</h2>
+<p>
+  Même fonctionnement que les services, mais pour les catégories d'équipements.
+</p>
+
+<h3>Catégories par défaut</h3>
+<p>Accessoire, Équipement réseau, Imprimante, Moniteur, Ordinateur fixe,
+   Ordinateur portable, Serveur, Tablette, Téléphone.</p>
+
+<div class="note">
+  <strong>Note technique :</strong> Les services et catégories sont stockés localement
+  dans votre navigateur (localStorage). Ils sont spécifiques à votre poste de travail.
+</div>
+
+<hr />
+
+<!-- 11. RESOLUTION DES PROBLEMES -->
+<h1><span class="section-num">11.</span> Résolution des problèmes courants</h1>
+
+<table>
+  <tr>
+    <th>Problème</th>
+    <th>Cause probable</th>
+    <th>Solution</th>
+  </tr>
+  <tr>
+    <td>La page ne charge pas les données (spinner infini)</td>
+    <td>API non accessible ou token expiré</td>
+    <td>Vérifiez que l'API PHP est en ligne. Déconnectez-vous et reconnectez-vous.</td>
+  </tr>
+  <tr>
+    <td>« Aucun équipement disponible » dans le formulaire d'affectation</td>
+    <td>Tous les équipements sont déjà affectés ou en maintenance</td>
+    <td>Enregistrez le retour d'une affectation active ou ajoutez un nouvel équipement avec le statut Disponible.</td>
+  </tr>
+  <tr>
+    <td>Le champ État est verrouillé dans le formulaire équipement</td>
+    <td>L'équipement est actuellement affecté</td>
+    <td>Enregistrez d'abord le retour de l'affectation active.</td>
+  </tr>
+  <tr>
+    <td>Le logo ne s'affiche pas après enregistrement</td>
+    <td>Fichier trop volumineux ou format non supporté</td>
+    <td>Utilisez un fichier PNG ou SVG de moins de 2 Mo.</td>
+  </tr>
+  <tr>
+    <td>Liste déroulante Service/Catégorie vide</td>
+    <td>Les données de référence ont été effacées</td>
+    <td>Allez dans Paramètres et cliquez sur ↺ pour réinitialiser les valeurs par défaut.</td>
+  </tr>
+  <tr>
+    <td>Erreur 401 sur toutes les requêtes</td>
+    <td>Token JWT expiré</td>
+    <td>Déconnectez-vous et reconnectez-vous.</td>
+  </tr>
+</table>
+
+<hr />
+
+<p style="text-align:center; color:#94a3b8; font-size:9pt; margin-top:30pt;">
+  EquipManager — Guide Utilisateur v1.0 &nbsp;|&nbsp; 2026 &nbsp;|&nbsp;
+  Généré pour usage interne
+</p>
+
+</body>
+</html>

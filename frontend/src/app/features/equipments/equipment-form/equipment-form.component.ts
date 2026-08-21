@@ -2,6 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { EquipmentService } from '../../../core/services/equipment.service';
+import { ReferenceDataService } from '../../../core/services/reference-data.service';
 import { EquipmentStatus } from '../../../core/models/equipment.model';
 
 @Component({
@@ -15,11 +16,13 @@ export class EquipmentFormComponent implements OnInit {
   private service = inject(EquipmentService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  refData = inject(ReferenceDataService);
 
   editId = signal<number | null>(null);
   loading = signal(false);
   saving = signal(false);
   error = signal('');
+  isAffecte = signal(false);
 
   readonly statusOptions: { value: EquipmentStatus; label: string }[] = [
     { value: 'disponible', label: 'Disponible' },
@@ -45,7 +48,16 @@ export class EquipmentFormComponent implements OnInit {
       this.editId.set(+id);
       this.loading.set(true);
       this.service.getById(+id).subscribe({
-        next: res => { if (res.success && res.data) this.form.patchValue(res.data); this.loading.set(false); },
+        next: res => {
+          if (res.success && res.data) {
+            this.form.patchValue(res.data);
+            if (res.data.etat === 'affecte') {
+              this.isAffecte.set(true);
+              this.form.get('etat')?.disable();
+            }
+          }
+          this.loading.set(false);
+        },
         error: () => { this.error.set('Équipement introuvable.'); this.loading.set(false); }
       });
     }
@@ -54,7 +66,7 @@ export class EquipmentFormComponent implements OnInit {
   submit(): void {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
     this.saving.set(true); this.error.set('');
-    const payload = this.form.value as any;
+    const payload = this.form.getRawValue() as any;
     const req = this.isEdit ? this.service.update(this.editId()!, payload) : this.service.create(payload);
     req.subscribe({
       next: res => { if (res.success) this.router.navigate(['/equipments']); else { this.error.set(res.message); this.saving.set(false); } },

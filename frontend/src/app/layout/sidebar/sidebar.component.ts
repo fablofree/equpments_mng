@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AppSettingsService } from '../../core/services/app-settings.service';
+import { LayoutService } from '../../core/services/layout.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,15 +11,16 @@ import { AppSettingsService } from '../../core/services/app-settings.service';
 })
 export class SidebarComponent {
   appSettings = inject(AppSettingsService);
+  layout = inject(LayoutService);
 
   navItems = [
-    { label: 'Tableau de bord', icon: 'bi-speedometer2', route: '/dashboard',    section: 'Principal' },
-    { label: 'Employés',        icon: 'bi-people',        route: '/employees',    section: 'Gestion' },
-    { label: 'Équipements',     icon: 'bi-laptop',        route: '/equipments',   section: 'Gestion' },
-    { label: 'Affectations',    icon: 'bi-link-45deg',    route: '/assignments',  section: 'Gestion' },
-    { label: 'Utilisateurs',    icon: 'bi-person-gear',   route: '/users',        section: 'Administration' },
-    { label: 'Mon profil',      icon: 'bi-person-circle', route: '/profile',      section: 'Administration' },
-    { label: 'Paramètres',      icon: 'bi-gear',          route: '/settings',     section: 'Administration' }
+    { label: 'Tableau de bord', icon: 'bi-speedometer2', route: '/dashboard',   section: 'Principal' },
+    { label: 'Employés',        icon: 'bi-people',        route: '/employees',   section: 'Gestion' },
+    { label: 'Équipements',     icon: 'bi-laptop',        route: '/equipments',  section: 'Gestion' },
+    { label: 'Affectations',    icon: 'bi-link-45deg',    route: '/assignments', section: 'Gestion' },
+    { label: 'Utilisateurs',    icon: 'bi-person-gear',   route: '/users',       section: 'Administration' },
+    { label: 'Mon profil',      icon: 'bi-person-circle', route: '/profile',     section: 'Administration' },
+    { label: 'Paramètres',      icon: 'bi-gear',          route: '/settings',    section: 'Administration' }
   ];
 
   get sections(): string[] {
@@ -27,5 +29,9 @@ export class SidebarComponent {
 
   itemsFor(section: string) {
     return this.navItems.filter(i => i.section === section);
+  }
+
+  closeOnMobile(): void {
+    if (window.innerWidth < 992) this.layout.close();
   }
 }

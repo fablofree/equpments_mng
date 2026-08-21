@@ -2,6 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { EmployeeService } from '../../../core/services/employee.service';
+import { ReferenceDataService } from '../../../core/services/reference-data.service';
 
 @Component({
   selector: 'app-employee-form',
@@ -14,6 +15,7 @@ export class EmployeeFormComponent implements OnInit {
   private service = inject(EmployeeService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  refData = inject(ReferenceDataService);
 
   editId = signal<number | null>(null);
   loading = signal(false);

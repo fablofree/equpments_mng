@@ -30,7 +30,8 @@ export class AssignmentFormComponent implements OnInit {
   form = this.fb.group({
     employe_id: [null as number | null, Validators.required],
     equipement_id: [null as number | null, Validators.required],
-    date_affectation: [new Date().toISOString().split('T')[0], Validators.required]
+    date_affectation: [new Date().toISOString().split('T')[0], Validators.required],
+    date_retour: [null as string | null]
   });
 
   ngOnInit(): void {
@@ -50,8 +51,14 @@ export class AssignmentFormComponent implements OnInit {
   submit(): void {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
     this.saving.set(true); this.error.set('');
-    const { employe_id, equipement_id, date_affectation } = this.form.value;
-    this.service.create({ employe_id: employe_id!, equipement_id: equipement_id!, date_affectation: date_affectation! }).subscribe({
+    const { employe_id, equipement_id, date_affectation, date_retour } = this.form.value;
+    const payload: any = {
+      employe_id: employe_id!,
+      equipement_id: equipement_id!,
+      date_affectation: date_affectation!
+    };
+    if (date_retour) payload.date_retour = date_retour;
+    this.service.create(payload).subscribe({
       next: res => { if (res.success) this.router.navigate(['/assignments']); else { this.error.set(res.message); this.saving.set(false); } },
       error: err => { this.error.set(err.error?.message ?? 'Erreur.'); this.saving.set(false); }
     });

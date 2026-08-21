@@ -5,6 +5,7 @@
   border-radius: 6px;
   background: rgba(255,255,255,0.1);
   padding: 2px;
+  flex-shrink: 0;
 }
 
 .sidebar-brand-name {
@@ -17,4 +18,5 @@
   padding: 0.75rem 1.25rem;
   border-top: 1px solid rgba(255,255,255,0.06);
   text-align: center;
+  flex-shrink: 0;
 }

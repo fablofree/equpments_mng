@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { AppSettingsService } from '../../core/services/app-settings.service';
+import { LayoutService } from '../../core/services/layout.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,6 +13,7 @@ import { AppSettingsService } from '../../core/services/app-settings.service';
 export class NavbarComponent {
   auth = inject(AuthService);
   appSettings = inject(AppSettingsService);
+  layout = inject(LayoutService);
 
   get initials(): string {
     const u = this.auth.currentUser();

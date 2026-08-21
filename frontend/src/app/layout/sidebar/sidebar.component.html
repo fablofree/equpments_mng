@@ -1,15 +1,20 @@
-<nav class="sidebar">
+<nav class="sidebar" [class.open]="layout.sidebarOpen()">
 
-  <!-- Brand / Logo -->
-  <a class="sidebar-brand" routerLink="/dashboard">
-    @if (appSettings.settings().logoDataUrl) {
-      <img [src]="appSettings.settings().logoDataUrl!"
-           class="sidebar-logo-img" alt="Logo" />
-    } @else {
-      <i class="bi bi-box-seam"></i>
-    }
-    <span class="sidebar-brand-name">{{ appSettings.settings().appName }}</span>
-  </a>
+  <!-- Brand + mobile close button -->
+  <div class="sidebar-brand-area">
+    <a class="sidebar-brand" routerLink="/dashboard" (click)="closeOnMobile()">
+      @if (appSettings.settings().logoDataUrl) {
+        <img [src]="appSettings.settings().logoDataUrl!" class="sidebar-logo-img" alt="Logo" />
+      } @else {
+        <i class="bi bi-box-seam"></i>
+      }
+      <span class="sidebar-brand-name">{{ appSettings.settings().appName }}</span>
+    </a>
+    <button type="button" class="sidebar-close-btn d-lg-none"
+            (click)="layout.close()" aria-label="Fermer le menu">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
 
   <!-- Navigation -->
   <div class="sidebar-nav">
@@ -19,7 +24,8 @@
         <a class="sidebar-link"
            [routerLink]="item.route"
            routerLinkActive="active"
-           [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }">
+           [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }"
+           (click)="closeOnMobile()">
           <i class="bi {{ item.icon }}"></i>
           {{ item.label }}
         </a>
@@ -27,7 +33,7 @@
     }
   </div>
 
-  <!-- App tagline at bottom -->
+  <!-- Tagline footer -->
   @if (appSettings.settings().tagline) {
     <div class="sidebar-footer">
       <span class="small text-muted">{{ appSettings.settings().tagline }}</span>

@@ -1,17 +1,19 @@
 import { Component, inject, signal, ElementRef, viewChild } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AppSettingsService } from '../../core/services/app-settings.service';
+import { ReferenceDataService } from '../../core/services/reference-data.service';
 import { AppSettings } from '../../core/models/app-settings.model';
 
 @Component({
   selector: 'app-settings',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, FormsModule],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.css'
 })
 export class SettingsComponent {
   private fb = inject(FormBuilder);
   appSettings = inject(AppSettingsService);
+  refData = inject(ReferenceDataService);
 
   fileInput = viewChild<ElementRef<HTMLInputElement>>('fileInput');
 
@@ -19,6 +21,10 @@ export class SettingsComponent {
   success = signal('');
   logoPreview = signal<string | null>(this.appSettings.settings().logoDataUrl);
   uploadError = signal('');
+
+  // Reference data inputs
+  newService = signal('');
+  newCategory = signal('');
 
   form = this.fb.group({
     appName:      [this.appSettings.settings().appName,      Validators.required],
@@ -56,7 +62,6 @@ export class SettingsComponent {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
     this.saving.set(true);
     this.success.set('');
-
     const updated: AppSettings = {
       appName:      this.form.value.appName!,
       tagline:      this.form.value.tagline ?? '',
@@ -66,7 +71,6 @@ export class SettingsComponent {
       contactPhone: this.form.value.contactPhone ?? '',
       logoDataUrl:  this.logoPreview()
     };
-
     this.appSettings.save(updated);
     this.success.set('Paramètres enregistrés avec succès.');
     this.saving.set(false);
@@ -80,5 +84,21 @@ export class SettingsComponent {
     this.logoPreview.set(null);
     this.success.set('Paramètres réinitialisés.');
     setTimeout(() => this.success.set(''), 3000);
+  }
+
+  // Services
+  addService(): void {
+    const name = this.newService().trim();
+    if (!name) return;
+    this.refData.addService(name);
+    this.newService.set('');
+  }
+
+  // Categories
+  addCategory(): void {
+    const name = this.newCategory().trim();
+    if (!name) return;
+    this.refData.addCategory(name);
+    this.newCategory.set('');
   }
 }

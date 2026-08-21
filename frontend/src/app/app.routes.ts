@@ -45,6 +45,10 @@ export const routes: Routes = [
         loadComponent: () => import('./features/employees/employee-form/employee-form.component').then(m => m.EmployeeFormComponent)
       },
       {
+        path: 'employees/:id',
+        loadComponent: () => import('./features/employees/employee-detail/employee-detail.component').then(m => m.EmployeeDetailComponent)
+      },
+      {
         path: 'equipments',
         loadComponent: () => import('./features/equipments/equipment-list/equipment-list.component').then(m => m.EquipmentListComponent)
       },
@@ -55,6 +59,10 @@ export const routes: Routes = [
       {
         path: 'equipments/:id/edit',
         loadComponent: () => import('./features/equipments/equipment-form/equipment-form.component').then(m => m.EquipmentFormComponent)
+      },
+      {
+        path: 'equipments/:id',
+        loadComponent: () => import('./features/equipments/equipment-detail/equipment-detail.component').then(m => m.EquipmentDetailComponent)
       },
       {
         path: 'assignments',

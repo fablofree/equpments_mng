@@ -30,9 +30,18 @@
             </div>
             <div class="col-md-6">
               <label class="form-label fw-semibold">Service <span class="text-danger">*</span></label>
-              <input type="text" class="form-control" formControlName="service" placeholder="Infrastructure, RH..."
-                     [class.is-invalid]="form.get('service')?.invalid && form.get('service')?.touched" />
+              <select class="form-select" formControlName="service"
+                      [class.is-invalid]="form.get('service')?.invalid && form.get('service')?.touched">
+                <option value="">-- Sélectionner un service --</option>
+                @for (s of refData.services(); track s) {
+                  <option [value]="s">{{ s }}</option>
+                }
+              </select>
               <div class="invalid-feedback">Requis.</div>
+              <div class="form-text">
+                Gérez les services disponibles dans
+                <a routerLink="/settings" class="text-decoration-none">Paramètres</a>.
+              </div>
             </div>
             <div class="col-md-6">
               <label class="form-label fw-semibold">Téléphone <span class="text-danger">*</span></label>

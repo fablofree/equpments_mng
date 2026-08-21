@@ -1,5 +1,9 @@
 <app-sidebar />
 
+@if (layout.sidebarOpen()) {
+  <div class="sidebar-overlay" (click)="layout.close()" role="presentation"></div>
+}
+
 <div class="main-content">
   <app-navbar />
   <div class="page-wrapper">

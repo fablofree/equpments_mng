@@ -1,9 +1,18 @@
 <header class="topbar">
+
+  <!-- Hamburger — mobile only -->
+  <button type="button" class="hamburger-btn d-lg-none"
+          (click)="layout.toggle()" aria-label="Ouvrir le menu">
+    <span class="hamburger-bar"></span>
+    <span class="hamburger-bar"></span>
+    <span class="hamburger-bar"></span>
+  </button>
+
   <!-- Logo + app name -->
-  <div class="d-flex align-items-center gap-2">
+  <div class="d-flex align-items-center gap-2 topbar-brand">
     @if (appSettings.settings().logoDataUrl) {
       <img [src]="appSettings.settings().logoDataUrl!"
-           alt="Logo" style="height:30px;width:30px;object-fit:contain;border-radius:4px;" />
+           alt="Logo" class="topbar-logo" />
     }
     <span class="topbar-title">{{ appSettings.settings().appName }}</span>
   </div>
@@ -12,13 +21,13 @@
   <div class="dropdown ms-auto">
     <button class="btn btn-light btn-sm d-flex align-items-center gap-2 dropdown-toggle"
             type="button" data-bs-toggle="dropdown" aria-expanded="false">
-      <span class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
-            style="width:32px;height:32px;font-size:0.8rem;font-weight:700;flex-shrink:0;">
-        {{ initials }}
-      </span>
-      <span class="d-none d-md-inline">{{ fullName }}</span>
+      <span class="user-avatar">{{ initials }}</span>
+      <span class="d-none d-sm-inline text-truncate" style="max-width:120px;">{{ fullName }}</span>
     </button>
-    <ul class="dropdown-menu dropdown-menu-end">
+    <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+      <li class="d-sm-none px-3 py-2 border-bottom">
+        <div class="fw-semibold small">{{ fullName }}</div>
+      </li>
       <li>
         <a class="dropdown-item" routerLink="/profile">
           <i class="bi bi-person me-2"></i>Mon profil
@@ -37,4 +46,5 @@
       </li>
     </ul>
   </div>
+
 </header>

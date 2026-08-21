@@ -14,6 +14,14 @@
       <div class="card-body p-4">
         @if (error()) { <div class="alert alert-danger py-2">{{ error() }}</div> }
 
+        @if (isAffecte()) {
+          <div class="alert alert-info d-flex align-items-center gap-2 mb-4">
+            <i class="bi bi-info-circle-fill"></i>
+            Cet équipement est actuellement affecté à un employé. Son état ne peut être modifié
+            que via le retour d'une affectation.
+          </div>
+        }
+
         <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
           <div class="row g-3">
             <div class="col-md-6">
@@ -30,9 +38,18 @@
             </div>
             <div class="col-md-6">
               <label class="form-label fw-semibold">Catégorie <span class="text-danger">*</span></label>
-              <input type="text" class="form-control" formControlName="categorie" placeholder="Ordinateur portable"
-                     [class.is-invalid]="form.get('categorie')?.invalid && form.get('categorie')?.touched" />
+              <select class="form-select" formControlName="categorie"
+                      [class.is-invalid]="form.get('categorie')?.invalid && form.get('categorie')?.touched">
+                <option value="">-- Sélectionner une catégorie --</option>
+                @for (cat of refData.categories(); track cat) {
+                  <option [value]="cat">{{ cat }}</option>
+                }
+              </select>
               <div class="invalid-feedback">Requis.</div>
+              <div class="form-text">
+                Gérez les catégories dans
+                <a routerLink="/settings" class="text-decoration-none">Paramètres</a>.
+              </div>
             </div>
             <div class="col-md-6">
               <label class="form-label fw-semibold">Marque <span class="text-danger">*</span></label>
@@ -53,6 +70,11 @@
                   <option [value]="s.value">{{ s.label }}</option>
                 }
               </select>
+              @if (isAffecte()) {
+                <div class="form-text text-warning">
+                  <i class="bi bi-lock-fill me-1"></i>Verrouillé — retournez l'affectation active pour modifier l'état.
+                </div>
+              }
             </div>
           </div>
           <div class="d-flex gap-2 mt-4">

@@ -21,6 +21,20 @@ export class AssignmentService {
     return this.http.get<ApiResponse<Assignment>>(`${this.url}/${id}`);
   }
 
+  getByEmployeeId(employeeId: number, page = 1, limit = 20): Observable<PaginatedResponse<Assignment>> {
+    const params = new HttpParams().set('page', page).set('limit', limit);
+    return this.http.get<PaginatedResponse<Assignment>>(
+      `${environment.apiUrl}/employees/${employeeId}/assignments`, { params }
+    );
+  }
+
+  getByEquipmentId(equipmentId: number, page = 1, limit = 20): Observable<PaginatedResponse<Assignment>> {
+    const params = new HttpParams().set('page', page).set('limit', limit);
+    return this.http.get<PaginatedResponse<Assignment>>(
+      `${environment.apiUrl}/equipments/${equipmentId}/assignments`, { params }
+    );
+  }
+
   create(payload: CreateAssignmentPayload): Observable<ApiResponse<Assignment>> {
     return this.http.post<ApiResponse<Assignment>>(this.url, payload);
   }

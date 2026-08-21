@@ -1,1 +1,55 @@
-/* Topbar styles live in global styles.css */
+.hamburger-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 0.4rem 0.5rem;
+  cursor: pointer;
+  border-radius: 6px;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.hamburger-btn:hover { background: #f1f5f9; }
+
+.hamburger-bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #475569;
+  border-radius: 2px;
+  transition: background 0.15s;
+}
+
+.hamburger-btn:hover .hamburger-bar { background: #1e293b; }
+
+.topbar-brand {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+.topbar-logo {
+  height: 30px;
+  width: 30px;
+  object-fit: contain;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--primary, #2563eb);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  line-height: 1;
+}

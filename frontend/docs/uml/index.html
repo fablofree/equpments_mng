@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diagrammes UML — EquipManager Backend</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; margin: 0; background: #f8fafc; color: #1e293b; }
+    header { background: #1e293b; color: #fff; padding: 1.5rem 2rem; }
+    header h1 { margin: 0 0 .25rem; font-size: 1.5rem; }
+    header p { margin: 0; opacity: .7; font-size: .9rem; }
+    .tabs { display: flex; gap: 0; border-bottom: 2px solid #e2e8f0; background: #fff;
+            padding: 0 2rem; }
+    .tab { padding: .75rem 1.25rem; cursor: pointer; border: none; background: none;
+           font-size: .95rem; color: #64748b; border-bottom: 2px solid transparent;
+           margin-bottom: -2px; font-family: inherit; }
+    .tab.active { color: #2563eb; border-bottom-color: #2563eb; font-weight: 600; }
+    .tab:hover:not(.active) { color: #334155; background: #f1f5f9; }
+    .panel { display: none; padding: 2rem; }
+    .panel.active { display: block; }
+    .diagram-card { background: #fff; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,.08);
+                    padding: 1.5rem; overflow-x: auto; }
+    .diagram-title { font-size: 1.1rem; font-weight: 700; margin: 0 0 .25rem; }
+    .diagram-desc { color: #64748b; font-size: .875rem; margin: 0 0 1.5rem; }
+    .mermaid { min-width: 600px; }
+    h2 { font-size: 1.15rem; font-weight: 700; margin: 0 0 .5rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Diagrammes UML — EquipManager Backend</h1>
+  <p>Architecture PHP · Classe · Cas d'utilisation · Séquence</p>
+</header>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('class')">Diagramme de classes</button>
+  <button class="tab" onclick="showTab('usecase')">Cas d'utilisation</button>
+  <button class="tab" onclick="showTab('sequence')">Diagramme de séquence</button>
+</div>
+
+<!-- CLASS DIAGRAM -->
+<div id="tab-class" class="panel active">
+  <div class="diagram-card">
+    <div class="diagram-title">Diagramme de classes</div>
+    <div class="diagram-desc">Structure des couches Controller → Service → Repository → Database</div>
+    <div class="mermaid">
+classDiagram
+  direction TB
+
+  class Database {
+    -PDO instance$
+    +getInstance() PDO$
+  }
+
+  class Router {
+    -array routes
+    +get(path, handler) void
+    +post(path, handler) void
+    +put(path, handler) void
+    +delete(path, handler) void
+    +resolve(Request) void
+  }
+
+  class Request {
+    +string method
+    +string uri
+    +array params
+    +getBody() array
+    +getParam(key) mixed
+    +getBearerToken() string
+  }
+
+  class Response {
+    +success(data, message, code) void
+    +error(message, code) void
+    +paginated(data, pagination) void
+  }
+
+  class BaseController {
+    #Request request
+    #Response response
+    #validate(data, rules) array
+    #paginate(page, limit) array
+  }
+
+  class AuthController {
+    -AuthService service
+    +login() void
+  }
+
+  class UserController {
+    -UserService service
+    +index() void
+    +show() void
+    +store() void
+    +update() void
+    +destroy() void
+  }
+
+  class EmployeeController {
+    -EmployeeService service
+    +index() void
+    +show() void
+    +store() void
+    +update() void
+    +destroy() void
+    +assignments() void
+  }
+
+  class EquipmentController {
+    -EquipmentService service
+    +index() void
+    +show() void
+    +store() void
+    +update() void
+    +destroy() void
+    +assignments() void
+  }
+
+  class AssignmentController {
+    -AssignmentService service
+    +index() void
+    +show() void
+    +store() void
+    +returnEquipment() void
+  }
+
+  class DashboardController {
+    -DashboardService service
+    +index() void
+  }
+
+  class AuthService {
+    -UserRepository repo
+    -JwtManager jwt
+    +login(email, password) array
+    +validateToken(token) array
+  }
+
+  class UserService {
+    -UserRepository repo
+    +findAll(limit, offset, q) array
+    +count(q) int
+    +findById(id) array
+    +create(data) array
+    +update(id, data) array
+    +delete(id) void
+  }
+
+  class EmployeeService {
+    -EmployeeRepository repo
+    +findAll(limit, offset, q) array
+    +count(q) int
+    +findById(id) array
+    +create(data) array
+    +update(id, data) array
+    +delete(id) void
+  }
+
+  class EquipmentService {
+    -EquipmentRepository repo
+    +findAll(limit, offset, q, etat) array
+    +count(q, etat) int
+    +findById(id) array
+    +create(data) array
+    +update(id, data) array
+    +delete(id) void
+  }
+
+  class AssignmentService {
+    -AssignmentRepository assignRepo
+    -EquipmentRepository eqRepo
+    +findAll(limit, offset, active) array
+    +count(active) int
+    +findById(id) array
+    +findByEmployeeId(id, limit, offset) array
+    +findByEquipmentId(id, limit, offset) array
+    +create(data) array
+    +return(id, date) array
+  }
+
+  class DashboardService {
+    -UserRepository userRepo
+    -EmployeeRepository empRepo
+    -EquipmentRepository eqRepo
+    -AssignmentRepository assignRepo
+    +getStats() array
+  }
+
+  class UserRepository {
+    -PDO db
+    +findAll(limit, offset, q) array
+    +count(q) int
+    +findById(id) array
+    +findByEmail(email) array
+    +create(data) int
+    +update(id, data) bool
+    +delete(id) bool
+  }
+
+  class EmployeeRepository {
+    -PDO db
+    +findAll(limit, offset, q) array
+    +count(q) int
+    +findById(id) array
+    +create(data) int
+    +update(id, data) bool
+    +delete(id) bool
+  }
+
+  class EquipmentRepository {
+    -PDO db
+    +findAll(limit, offset, q, etat) array
+    +count(q, etat) int
+    +findById(id) array
+    +updateStatus(id, etat) bool
+    +create(data) int
+    +update(id, data) bool
+    +delete(id) bool
+  }
+
+  class AssignmentRepository {
+    -PDO db
+    -string SELECT_WITH_JOINS$
+    +findAll(limit, offset, activeOnly) array
+    +count(activeOnly) int
+    +findById(id) array
+    +findByEmployeeId(id, limit, offset) array
+    +findByEquipmentId(id, limit, offset) array
+    +findActiveByEquipmentId(id) array
+    +create(data) int
+    +return(id, date) bool
+  }
+
+  class JwtManager {
+    -string secret
+    -int ttl
+    +generate(payload) string
+    +verify(token) array
+  }
+
+  class AuthMiddleware {
+    -JwtManager jwt
+    +handle(Request) void
+  }
+
+  BaseController <|-- AuthController
+  BaseController <|-- UserController
+  BaseController <|-- EmployeeController
+  BaseController <|-- EquipmentController
+  BaseController <|-- AssignmentController
+  BaseController <|-- DashboardController
+
+  AuthController --> AuthService
+  UserController --> UserService
+  EmployeeController --> EmployeeService
+  EquipmentController --> EquipmentService
+  AssignmentController --> AssignmentService
+  DashboardController --> DashboardService
+
+  AuthService --> UserRepository
+  AuthService --> JwtManager
+  UserService --> UserRepository
+  EmployeeService --> EmployeeRepository
+  EquipmentService --> EquipmentRepository
+  AssignmentService --> AssignmentRepository
+  AssignmentService --> EquipmentRepository
+  DashboardService --> UserRepository
+  DashboardService --> EmployeeRepository
+  DashboardService --> EquipmentRepository
+  DashboardService --> AssignmentRepository
+
+  UserRepository --> Database
+  EmployeeRepository --> Database
+  EquipmentRepository --> Database
+  AssignmentRepository --> Database
+
+  Router --> AuthMiddleware
+  AuthMiddleware --> JwtManager
+    </div>
+  </div>
+</div>
+
+<!-- USE CASE DIAGRAM -->
+<div id="tab-usecase" class="panel">
+  <div class="diagram-card">
+    <div class="diagram-title">Diagramme de cas d'utilisation</div>
+    <div class="diagram-desc">Acteurs et fonctionnalités exposées par le backend</div>
+    <div class="mermaid">
+flowchart LR
+  Admin(["👤 Admin\n(Utilisateur authentifié)"])
+
+  subgraph Authentification
+    UC1["Se connecter"]
+    UC2["Se déconnecter"]
+    UC3["Modifier son profil"]
+  end
+
+  subgraph Gestion_Utilisateurs["Gestion des Utilisateurs"]
+    UC4["Créer un utilisateur"]
+    UC5["Lister les utilisateurs"]
+    UC6["Modifier un utilisateur"]
+    UC7["Supprimer un utilisateur"]
+  end
+
+  subgraph Gestion_Employes["Gestion des Employés"]
+    UC8["Créer un employé"]
+    UC9["Lister les employés"]
+    UC10["Modifier un employé"]
+    UC11["Supprimer un employé"]
+    UC12["Voir l'historique\nd'affectations"]
+  end
+
+  subgraph Gestion_Equipements["Gestion des Équipements"]
+    UC13["Créer un équipement"]
+    UC14["Lister les équipements"]
+    UC15["Modifier un équipement"]
+    UC16["Supprimer un équipement"]
+    UC17["Voir l'historique\nd'affectations"]
+  end
+
+  subgraph Gestion_Affectations["Gestion des Affectations"]
+    UC18["Créer une affectation"]
+    UC19["Lister les affectations"]
+    UC20["Enregistrer un retour"]
+  end
+
+  subgraph Dashboard
+    UC21["Consulter les statistiques"]
+    UC22["Vue par statut\nd'équipement"]
+  end
+
+  Admin --> UC1
+  Admin --> UC2
+  Admin --> UC3
+  Admin --> UC4
+  Admin --> UC5
+  Admin --> UC6
+  Admin --> UC7
+  Admin --> UC8
+  Admin --> UC9
+  Admin --> UC10
+  Admin --> UC11
+  Admin --> UC12
+  Admin --> UC13
+  Admin --> UC14
+  Admin --> UC15
+  Admin --> UC16
+  Admin --> UC17
+  Admin --> UC18
+  Admin --> UC19
+  Admin --> UC20
+  Admin --> UC21
+  Admin --> UC22
+
+  UC18 -.->|"inclut"| UC14
+  UC18 -.->|"inclut"| UC9
+  UC20 -.->|"étend"| UC19
+    </div>
+  </div>
+</div>
+
+<!-- SEQUENCE DIAGRAM -->
+<div id="tab-sequence" class="panel">
+  <div class="diagram-card">
+    <div class="diagram-title">Diagramme de séquence — Connexion &amp; Création d'affectation</div>
+    <div class="diagram-desc">Flux complet de login puis création d'une affectation (avec mise à jour du statut équipement)</div>
+    <div class="mermaid">
+sequenceDiagram
+  actor Browser as Navigateur (Frontend)
+  participant Router as Router PHP
+  participant Auth as AuthMiddleware
+  participant AC as AuthController
+  participant AS as AuthService
+  participant JWT as JwtManager
+  participant UR as UserRepository
+  participant DB as Base de données
+
+  Note over Browser,DB: Flux 1 — Authentification
+  Browser->>Router: POST /api/auth/login {email, password}
+  Router->>AC: login()
+  AC->>AS: login(email, password)
+  AS->>UR: findByEmail(email)
+  UR->>DB: SELECT * FROM users WHERE email=?
+  DB-->>UR: Ligne utilisateur
+  UR-->>AS: User array
+  AS->>AS: password_verify(password, hash)
+  AS->>JWT: generate({id, email, role})
+  JWT-->>AS: token JWT
+  AS-->>AC: {token, user}
+  AC-->>Browser: 200 {success, token, user}
+  Browser->>Browser: Stocke token dans localStorage
+
+  Note over Browser,DB: Flux 2 — Création d'affectation
+  participant AssCtrl as AssignmentController
+  participant AssServ as AssignmentService
+  participant AssRepo as AssignmentRepository
+  participant EqRepo as EquipmentRepository
+
+  Browser->>Router: POST /api/assignments {employe_id, equipement_id, date}
+  Router->>Auth: handle(request)
+  Auth->>JWT: verify(Bearer token)
+  JWT-->>Auth: Payload valide
+  Auth-->>Router: Autorisé
+  Router->>AssCtrl: store()
+  AssCtrl->>AssCtrl: validate(data, rules)
+  AssCtrl->>AssServ: create(data)
+  AssServ->>EqRepo: findById(equipement_id)
+  EqRepo->>DB: SELECT * FROM equipments WHERE id=?
+  DB-->>EqRepo: Équipement (etat=disponible)
+  EqRepo-->>AssServ: Equipment
+  AssServ->>AssRepo: create({employe_id, equipement_id, date})
+  AssRepo->>DB: INSERT INTO assignments …
+  DB-->>AssRepo: new id
+  AssServ->>EqRepo: updateStatus(equipement_id, affecte)
+  EqRepo->>DB: UPDATE equipments SET etat='affecte' WHERE id=?
+  DB-->>EqRepo: OK
+  AssServ->>AssRepo: findById(new id)
+  AssRepo->>DB: SELECT a.*, e.nom, eq.nom FROM assignments JOIN …
+  DB-->>AssRepo: Affectation complète
+  AssRepo-->>AssServ: Assignment array
+  AssServ-->>AssCtrl: Assignment
+  AssCtrl-->>Browser: 201 {success, data: assignment}
+    </div>
+  </div>
+</div>
+
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose',
+    flowchart: { useMaxWidth: false } });
+
+  function showTab(name) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.target.classList.add('active');
+  }
+</script>
+</body>
+</html>
